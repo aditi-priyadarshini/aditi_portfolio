@@ -86,7 +86,7 @@
 var swiper = new Swiper(".mySwiper", {
   loop: true,  // Loop the slides
   autoplay: {
-    delay: 3000,  // Slide every 3 seconds
+    delay: 1500,  // Slide every 3 seconds
     disableOnInteraction: false,  // Keep autoplay active even if the user interacts with the swiper
   },
   grabCursor: true,  // Makes the slides draggable
