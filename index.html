@@ -165,18 +165,22 @@
     <div class="grid md:grid-cols-2 gap-8">
       <!-- Contact Form -->
       <div class="contact-form">
-        <form name="contact-form" id="contact-form" class="bg-dark p-6 rounded-lg shadow-lg" data-aos="fade-right">
-          <div id="alert" class="alert text-center mb-4 text-green-500 hidden">Your Message Has Been Sent</div>
+        <form id="contact-form" class="bg-dark p-6 rounded-lg shadow-lg" data-aos="fade-right">
+          <div id="success-message" class="alert text-center mb-4 text-green-500 hidden">✅ Message Sent Successfully!</div>
+        
+          <input id="name" name="name" placeholder="Your Name" required class="w-full p-3 mb-4 bg-gray-700 text-white rounded-lg">
           
-          <input id="name" name="Name" placeholder="Your Name" required class="w-full p-3 mb-4 bg-gray-700 text-white rounded-lg">
-          <input id="email" name="Email" placeholder="Your Email" required class="w-full p-3 mb-4 bg-gray-700 text-white rounded-lg">
-          <input id="phone" name="Ph-number" placeholder="Your Phone Number" required class="w-full p-3 mb-4 bg-gray-700 text-white rounded-lg">
-          <input id="subject" name="Subject" placeholder="Subject" required class="w-full p-3 mb-4 bg-gray-700 text-white rounded-lg">
-          
-          <textarea name="Message" id="message" rows="6" placeholder="Your Message" class="w-full p-3 mb-4 bg-gray-700 text-white rounded-lg"></textarea>
-          
-          <button name="submit" class="bg-pharma-green text-white px-6 py-3 rounded-full hover:bg-green-700 transition w-full" type="submit">Submit</button>
+          <input id="email" name="email" placeholder="Your Email" required class="w-full p-3 mb-4 bg-gray-700 text-white rounded-lg">
+        
+          <input id="phone" name="phone" placeholder="Your Phone Number" required class="w-full p-3 mb-4 bg-gray-700 text-white rounded-lg">
+        
+          <input id="subject" name="subject" placeholder="Subject" required class="w-full p-3 mb-4 bg-gray-700 text-white rounded-lg">
+        
+          <textarea id="message" name="message" rows="6" placeholder="Your Message" class="w-full p-3 mb-4 bg-gray-700 text-white rounded-lg"></textarea>
+        
+          <button type="submit" class="bg-pharma-green text-white px-6 py-3 rounded-full hover:bg-green-700 transition w-full">Submit</button>
         </form>
+        
       </div>
       
       <!-- Contact Details -->
@@ -210,5 +214,16 @@
     AOS.init();
   </script>
   <script src="script.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<script>
+  emailjs.init('UfV4IgFhAzpK6Io7l');  // your EmailJS public key
+</script>
+
+
+<script>
+</script>
 </body>
 </html>
