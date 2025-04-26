@@ -14,6 +14,10 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+
+
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -35,19 +39,45 @@
 
 <body class="bg-dark text-light">
 
-  <!-- Navbar -->
-  <header class="fixed w-full bg-dark shadow z-50">
+<!-- Navbar -->
+<header class="fixed w-full bg-dark shadow z-50">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <div class="text-2xl font-bold text-pharma-green">Aditi</div>
-      <nav class="space-x-6 text-sm">
-        <a href="#about" class="hover:text-pharma-green">About</a>
-        <a href="#skills" class="hover:text-pharma-green">Skills</a>
-        <a href="#education" class="hover:text-pharma-green">Education</a>
-        <a href="#projects" class="hover:text-pharma-green">Projects</a>
-        <a href="#contact" class="hover:text-pharma-green">Contact</a>
+  
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button id="menu-btn" class="text-pharma-green focus:outline-none">
+          <i class="fas fa-bars text-2xl"></i> <!-- FontAwesome hamburger icon -->
+        </button>
+      </div>
+  
+      <!-- Navigation Links -->
+      <nav id="menu" class="hidden md:flex space-x-6 text-sm">
+        <a href="#about" class="hover:text-pharma-green block">About</a>
+        <a href="#skills" class="hover:text-pharma-green block">Skills</a>
+        <a href="#education" class="hover:text-pharma-green block">Education</a>
+        <a href="#projects" class="hover:text-pharma-green block">Projects</a>
+        <a href="#contact" class="hover:text-pharma-green block">Contact</a>
       </nav>
     </div>
+  
+<!-- Mobile Menu (Sidebar) -->
+<div id="mobile-menu" class="fixed top-0 right-0 h-full w-2/3 max-w-sm bg-dark transform translate-x-full transition-transform duration-300 ease-in-out z-40 shadow-lg md:hidden">
+    <div class="flex justify-end p-4">
+      <button id="close-btn" class="text-white text-2xl hover:text-pharma-green">&times;</button>
+    </div>
+    <div class="p-6 space-y-6 text-sm">
+      <a href="#about" class="menu-link hover:text-pharma-green block">About</a>
+      <a href="#skills" class="menu-link hover:text-pharma-green block">Skills</a>
+      <a href="#education" class="menu-link hover:text-pharma-green block">Education</a>
+      <a href="#projects" class="menu-link hover:text-pharma-green block">Projects</a>
+      <a href="#contact" class="menu-link hover:text-pharma-green block">Contact</a>
+    </div>
+  </div>
+  
+  
   </header>
+  
 
   <!-- Hero -->
   <section class="min-h-screen flex items-center justify-center text-center pt-24" id="home">
@@ -172,5 +202,6 @@
   <script>
     AOS.init();
   </script>
+  <script src="script.js"></script>
 </body>
 </html>

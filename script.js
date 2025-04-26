@@ -1,22 +1,46 @@
-// Simple fade-in effect when sections come into view
-const faders = document.querySelectorAll('.fade-in');
+  const menuBtn = document.getElementById("menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const closeBtn = document.getElementById("close-btn");
+  const menuLinks = document.querySelectorAll(".menu-link");
 
-const appearOptions = {
-  threshold: 0.3,
-  rootMargin: "0px 0px -50px 0px"
-};
+  // Open/Close Menu on Menu Button
+  menuBtn.addEventListener("click", () => {
+    toggleMenu();
+  });
 
-const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) {
-      return;
-    } else {
-      entry.target.classList.add('visible');
-      appearOnScroll.unobserve(entry.target);
+  // Close Menu on Close Button
+  closeBtn.addEventListener("click", () => {
+    closeMenu();
+  });
+
+  // Close Menu when clicking any link
+  menuLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      closeMenu();
+    });
+  });
+
+  // Also close when clicking outside
+  document.addEventListener("click", function (e) {
+    if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+      closeMenu();
     }
   });
-}, appearOptions);
 
-faders.forEach(fader => {
-  appearOnScroll.observe(fader);
-});
+  // Toggle Menu
+  function toggleMenu() {
+    if (mobileMenu.classList.contains("translate-x-full")) {
+      mobileMenu.classList.remove("translate-x-full");
+      mobileMenu.classList.add("translate-x-0");
+    } else {
+      mobileMenu.classList.remove("translate-x-0");
+      mobileMenu.classList.add("translate-x-full");
+    }
+  }
+
+  // Close Menu
+  function closeMenu() {
+    mobileMenu.classList.add("translate-x-full");
+    mobileMenu.classList.remove("translate-x-0");
+  }
+
