@@ -80,3 +80,21 @@
       alert('❌ Failed to send message. Try again.');
     });
 });
+
+
+//swiper
+var swiper = new Swiper(".mySwiper", {
+  loop: true,  // Loop the slides
+  autoplay: {
+    delay: 3000,  // Slide every 3 seconds
+    disableOnInteraction: false,  // Keep autoplay active even if the user interacts with the swiper
+  },
+  grabCursor: true,  // Makes the slides draggable
+  centeredSlides: true,  // Centers the active slide
+  slidesPerView: "auto",  // Adjust number of slides visible at a time
+  spaceBetween: 20,  // Adds space between slides
+  pagination: {
+    el: ".swiper-pagination",  // For the pagination dots
+    clickable: true,  // Makes the pagination clickable
+  },
+});
