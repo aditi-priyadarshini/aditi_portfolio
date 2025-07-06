@@ -1,528 +1,556 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aditi Priyadarshini | Aspiring Pharmacist</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aditi Priyadarshini | Aspiring Pharmacist</title>
 
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <link rel="icon" type="image/png" href="assets/logo.png">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-
-    <link rel="icon" type="image/png" href="assets/logo.png">
-
-    <meta name="description" content="Aditi Priyadarshini - Aspiring Pharmacist and B.Pharm Student. Explore my projects, skills, education, and professional journey in pharmaceutical sciences.">
-    <meta name="keywords" content="Pharmacy, Pharmacist, B.Pharm Student, Pharmaceutical Science, Drug Development, Forensic Science, Biotechnology, Aditi Priyadarshini, Portfolio">
-    <meta name="author" content="Aditi Priyadarshini">
-
-    <meta property="og:title" content="Aditi Priyadarshini - Pharmacy Portfolio" />
-    <meta property="og:description" content="Explore Aditi's pharmacy journey, projects, skills, and achievements." />
-    <meta property="og:image" content="https://aditi-priyadarshini-portfolio.vercel.app/assets/logo.png" />
-    <meta property="og:url" content="https://aditi-priyadarshini-portfolio.vercel.app/" />
-    <meta property="og:type" content="website" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Aditi Priyadarshini - Pharmacy Portfolio" />
-    <meta name="twitter:description" content="Explore Aditi's pharmacy journey, projects, skills, and achievements." />
-    <meta name="twitter:image" content="https://aditi-priyadarshini-portfolio.vercel.app/assets/logo.png" /> 
-    
-    <style>
-        :root {
-            --primary-bg: #1A1A2E; /* Dark Blue-Grey */
-            --secondary-bg: #21213C; /* Slightly lighter dark blue */
-            --text-light: #E0E0EB; /* Light grey for body text */
-            --text-heading: #FFFFFF; /* White for main headings */
-            --accent-green: #3ECF8E; /* Vibrant, sophisticated green */
-            --accent-green-dark: #2BBF7B; /* Darker green for hover */
-            --card-bg: #272740; /* Darker card background */
-            --border-color: #3A3A5E; /* Subtle border color */
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--primary-bg);
-            color: var(--text-light);
-            line-height: 1.6;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Playfair Display', serif;
-            color: var(--text-heading);
-        }
-
-        .bg-primary-dark { background-color: var(--primary-bg); }
-        .bg-secondary-dark { background-color: var(--secondary-dark); } /* Corrected for consistency */
-        .text-accent-green { color: var(--accent-green); }
-        .bg-accent-green { background-color: var(--accent-green); }
-        .border-accent-green { border-color: var(--accent-green); }
-        
-        .hover\:text-accent-green:hover { color: var(--accent-green); }
-        .hover\:bg-accent-green-dark:hover { background-color: var(--accent-green-dark); }
-        .hover\:border-accent-green:hover { border-color: var(--accent-green); }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease-in-out;
-        }
-        .card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: var(--accent-green);
-        }
-
-        .section-heading {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 2rem; /* Slightly reduced margin */
-            padding-bottom: 0.5rem;
-        }
-        .section-heading::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: 0;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background-color: var(--accent-green);
-            border-radius: 5px;
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 30px;
-            border-left: 2px solid var(--border-color);
-        }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -8px;
-            top: 0px;
-            width: 16px;
-            height: 16px;
-            background-color: var(--accent-green);
-            border-radius: 50%;
-            border: 2px solid var(--primary-bg);
-            box-shadow: 0 0 0 4px var(--primary-bg);
-        }
-        .timeline-item:last-child {
-            border-left: none; /* No line after the last item, for a cleaner end */
-        }
-        .timeline-item:last-child::before {
-             top: 0; /* Ensure the dot aligns at the top of the last item */
-        }
-        .swiper-pagination-bullet {
-            background-color: var(--text-light) !important;
-            opacity: 0.6 !important;
-            transition: all 0.3s ease;
-        }
-        .swiper-pagination-bullet-active {
-            background-color: var(--accent-green) !important;
-            opacity: 1 !important;
-            transform: scale(1.2);
-        }
-    </style>
+  <meta name="description"
+    content="Aditi Priyadarshini - Aspiring Pharmacist and B.Pharm Student. Explore my projects, skills, education, and professional journey in pharmaceutical sciences.">
+  <meta name="keywords"
+    content="Pharmacy, Pharmacist, B.Pharm Student, Pharmaceutical Science, Drug Development, Forensic Science, Biotechnology, Aditi Priyadarshini, Portfolio">
+  <meta name="author" content="Aditi Priyadarshini">
+  <meta property="og:title" content="Aditi Priyadarshini - Pharmacy Portfolio" />
+  <meta property="og:description" content="Explore Aditi's pharmacy journey, projects, skills, and achievements." />
+  <meta property="og:image" content="https://aditi-priyadarshini-portfolio.vercel.app/assets/logo.png" />
+  <meta property="og:url" content="https://aditi-priyadarshini-portfolio.vercel.app/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Aditi Priyadarshini - Pharmacy Portfolio" />
+  <meta name="twitter:description" content="Explore Aditi's pharmacy journey, projects, skills, and achievements." />
+  <meta name="twitter:image" content="https://aditi-priyadarshini-portfolio.vercel.app/assets/logo.png" />
 </head>
 
 <body class="bg-primary-dark text-text-light overflow-x-hidden">
 
-<header class="fixed w-full bg-primary-dark bg-opacity-95 shadow-xl z-50 transition-all duration-300 py-4">
+  <header class="fixed w-full bg-primary-dark bg-opacity-95 shadow-xl z-50 transition-all duration-300 py-4">
     <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <a href="#home" class="flex items-center space-x-3 group">
-            <img loading="lazy" src="assets/logo.png" alt="Aditi Logo" class="h-10 w-10 object-cover rounded-full group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
-            <div class="text-3xl font-extrabold text-accent-green font-['Playfair_Display']">Aditi</div>
-        </a>
-      
-        <div class="md:hidden">
-            <button id="menu-btn" class="text-accent-green focus:outline-none p-2 rounded-md hover:bg-secondary-dark transition">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
-        </div>
-      
-        <nav id="menu" class="hidden md:flex space-x-8 text-md font-medium">
-            <a href="#about" class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">About</a>
-            <a href="#skills" class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">Skills</a>
-            <a href="#education" class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">Education</a>
-            <a href="#experience" class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">Experience</a>
-            <a href="#projects" class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">Projects</a>
-            <a href="#contact" class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">Contact</a>
-        </nav>
+      <a href="#home" class="flex items-center space-x-3 group">
+        <img loading="lazy" src="assets/logo.png" alt="Aditi Logo"
+          class="h-10 w-10 object-cover rounded-full group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+        <div class="text-3xl font-extrabold text-accent-green font-['Playfair_Display']">Aditi</div>
+      </a>
+
+      <div class="md:hidden">
+        <button id="menu-btn"
+          class="text-accent-green focus:outline-none p-2 rounded-md hover:bg-secondary-dark transition">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+
+      <nav id="menu" class="hidden md:flex space-x-8 text-md font-medium">
+        <a href="#about"
+          class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">About</a>
+        <a href="#skills"
+          class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">Skills</a>
+        <a href="#education"
+          class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">Education</a>
+        <a href="#experience"
+          class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">Experience</a>
+        <a href="#projects"
+          class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">Projects</a>
+        <a href="#contact"
+          class="relative hover:text-accent-green after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-green after:transition-all after:duration-300 hover:after:w-full">Contact</a>
+      </nav>
     </div>
-    
-    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-2/3 max-w-xs bg-secondary-dark transform translate-x-full transition-transform duration-300 ease-in-out z-40 shadow-xl md:hidden">
-        <div class="flex justify-end p-6">
-            <button id="close-btn" class="text-text-light text-3xl hover:text-accent-green">&times;</button>
-        </div>
-        <div class="p-8 space-y-6 text-lg font-medium">
-            <a href="#about" class="menu-link block text-text-light hover:text-accent-green transition">About</a>
-            <a href="#skills" class="menu-link block text-text-light hover:text-accent-green transition">Skills</a>
-            <a href="#education" class="menu-link block text-text-light hover:text-accent-green transition">Education</a>
-            <a href="#experience" class="menu-link block text-text-light hover:text-accent-green transition">Experience</a>
-            <a href="#projects" class="menu-link block text-text-light hover:text-accent-green transition">Projects</a>
-            <a href="#contact" class="menu-link block text-text-light hover:text-accent-green transition">Contact</a>
-        </div>
+
+    <div id="mobile-menu"
+      class="fixed top-0 right-0 h-full w-2/3 max-w-xs bg-secondary-dark transform translate-x-full transition-transform duration-300 ease-in-out z-40 shadow-xl md:hidden">
+      <div class="flex justify-end p-6">
+        <button id="close-btn" class="text-text-light text-3xl hover:text-accent-green">&times;</button>
+      </div>
+      <div class="p-8 space-y-6 text-lg font-medium">
+        <a href="#about" class="menu-link block text-text-light hover:text-accent-green transition">About</a>
+        <a href="#skills" class="menu-link block text-text-light hover:text-accent-green transition">Skills</a>
+        <a href="#education" class="menu-link block text-text-light hover:text-accent-green transition">Education</a>
+        <a href="#experience" class="menu-link block text-text-light hover:text-accent-green transition">Experience</a>
+        <a href="#projects" class="menu-link block text-text-light hover:text-accent-green transition">Projects</a>
+        <a href="#contact" class="menu-link block text-text-light hover:text-accent-green transition">Contact</a>
+      </div>
     </div>
-</header>
-  
-<section class="min-h-screen flex items-center justify-center text-center pt-24 pb-12 relative overflow-hidden" id="home">
+  </header>
+
+  <section class="min-h-screen flex items-center justify-center text-center pt-24 pb-12 relative overflow-hidden"
+    id="home">
     <div class="absolute inset-0 bg-gradient-to-br from-primary-dark to-secondary-dark opacity-90 z-0"></div>
-    <div class="absolute inset-0 z-0 opacity-10" style="background-image: url('assets/hero-pattern.png'); background-size: cover; background-position: center;"></div>
-    
+    <div class="absolute inset-0 z-0 opacity-10"
+      style="background-image: url('assets/hero-pattern.png'); background-size: cover; background-position: center;">
+    </div>
+
     <div class="relative z-10 p-6 max-w-4xl mx-auto">
-        <img loading="lazy" src="assets/profile.jpg" alt="Aditi Priyadarshini Profile" class="w-48 h-48 mx-auto rounded-full mb-6 shadow-2xl border-4 border-accent-green object-cover animate-fade-in-down" data-aos="zoom-in" data-aos-duration="1200">
-      
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-3 text-accent-green leading-tight font-['Playfair_Display'] animate-fade-in-up" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1200">Aditi Priyadarshini</h1>
-      
-        <p class="text-lg sm:text-xl md:text-2xl text-text-light mb-8 font-light tracking-wide animate-fade-in-up" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1200">Aspiring Pharmacist | B.Pharm Student</p>
-      
-        <div class="flex justify-center space-x-6 sm:space-x-8 mb-10 animate-fade-in-up" data-aos="fade-up" data-aos-delay="600" data-aos-duration="1200">
-            <a href="https://linkedin.com/in/aditi-priyadarshini" target="_blank" aria-label="LinkedIn Profile" class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 ease-out">
-                <i class="fab fa-linkedin fa-3x"></i>
-            </a>
-            <a href="mailto:aditipriyadarshiniofficial@gmail.com" aria-label="Email Aditi" class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 ease-out">
-                <i class="fas fa-envelope fa-3x"></i>
-            </a>
-            <a href="https://github.com/your-github-profile" target="_blank" aria-label="GitHub Profile" class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 ease-out">
-                <i class="fab fa-github fa-3x"></i>
-            </a>
-        </div>
-      
-        <a href="assets/aditi_resume.pdf" target="_blank" download class="inline-block bg-accent-green text-primary-dark px-8 py-3 sm:px-10 sm:py-4 rounded-full text-lg font-semibold hover:bg-accent-green-dark transition-all duration-300 transform hover:scale-105 shadow-xl animate-fade-in-up" data-aos="fade-up" data-aos-delay="800" data-aos-duration="1200">
-            <i class="fas fa-download mr-3"></i> Download Resume
+      <img loading="lazy" src="assets/profile.jpg" alt="Aditi Priyadarshini Profile"
+        class="w-48 h-48 mx-auto rounded-full mb-6 shadow-2xl border-4 border-accent-green object-cover animate-fade-in-down"
+        data-aos="zoom-in" data-aos-duration="1200">
+
+      <h1
+        class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-3 text-accent-green leading-tight font-['Playfair_Display'] animate-fade-in-up"
+        data-aos="fade-up" data-aos-delay="200" data-aos-duration="1200">Aditi Priyadarshini</h1>
+
+      <p class="text-lg sm:text-xl md:text-2xl text-text-light mb-8 font-light tracking-wide animate-fade-in-up"
+        data-aos="fade-up" data-aos-delay="400" data-aos-duration="1200">Aspiring Pharmacist | B.Pharm Student</p>
+
+      <div class="flex justify-center space-x-6 sm:space-x-8 mb-10 animate-fade-in-up" data-aos="fade-up"
+        data-aos-delay="600" data-aos-duration="1200">
+        <a href="https://linkedin.com/in/aditi-priyadarshini" target="_blank" aria-label="LinkedIn Profile"
+          class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 ease-out">
+          <i class="fab fa-linkedin fa-3x"></i>
         </a>
-    </div>
-</section>
-  
-<section class="bg-secondary-dark py-16 px-6" id="about"> <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12"> <div class="md:w-1/2" data-aos="fade-right" data-aos-duration="1000">
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-accent-green section-heading mb-6 text-center md:text-left">About Me</h2> <p class="text-base sm:text-lg text-text-light leading-relaxed mb-5"> Hello! I'm **Aditi Priyadarshini**, an enthusiastic **B.Pharmacy student** with a deep passion for pharmaceutical sciences. My academic journey is fueled by a strong curiosity to explore interdisciplinary fields such as <strong class="text-accent-green">forensic science</strong>, <strong class="text-accent-green">drug development</strong>, and <strong class="text-accent-green">biotechnology</strong>.
-            </p>
-            <p class="text-base sm:text-lg text-text-light leading-relaxed">
-                I believe that innovation and scientific understanding are key to advancing healthcare and ensuring public safety. My goal is to build a robust foundation in pharmacy while actively gaining exposure to cutting-edge research and practical applications in these exciting and emerging areas. I'm eager to learn, grow, and contribute meaningfully to the future of healthcare and scientific discovery. Let's connect and explore how we can make a difference!
-            </p>
-        </div>
-        <div class="md:w-1/2 flex justify-center" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
-            <img loading="lazy" src="assets/ChatGPT Image Jun 17, 2025, 03_25_44 PM.png" alt="Pharmacy illustration" class="w-full max-w-md">
-        </div>
-    </div>
-</section>
-
----
-
-<section class="bg-primary-dark py-16 px-6" id="skills"> <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-accent-green section-heading mb-10 text-center" data-aos="fade-down" data-aos-duration="1000">My Core Skills</h2> <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"> <div class="card p-6 rounded-xl shadow-lg flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000"> <div class="text-accent-green mb-3 text-4xl"><i class="fas fa-capsules"></i></div> <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Pharmaceutics</h3>
-                <p class="text-gray-400 text-sm">Understanding drug formulation, development, and delivery systems.</p>
-            </div>
-
-            <div class="card p-6 rounded-xl shadow-lg flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                <div class="text-accent-green mb-3 text-4xl"><i class="fas fa-microscope"></i></div>
-                <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Human Anatomy & Physiology</h3>
-                <p class="text-gray-400 text-sm">Comprehensive knowledge of the human body's structure and systemic functions.</p>
-            </div>
-
-            <div class="card p-6 rounded-xl shadow-lg flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
-                <div class="text-accent-green mb-3 text-4xl"><i class="fas fa-vial"></i></div>
-                <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Biochemistry</h3>
-                <p class="text-gray-400 text-sm">Basic understanding of biochemical processes in health and disease.</p>
-            </div>
-
-            <div class="card p-6 rounded-xl shadow-lg flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
-                <div class="text-accent-green mb-3 text-4xl"><i class="fas fa-flask"></i></div>
-                <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Pharmaceutical Analysis</h3>
-                <p class="text-gray-400 text-sm">Skills in ensuring quality and safety of pharmaceutical products.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
----
-<!-- EDUCATION -->
-<section class="bg-secondary-dark py-6 px-4" id="education">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-2xl font-bold text-accent-green mb-4 text-left">My Educational Journey</h2>
-
-    <div class="space-y-4">
-      <div class="flex items-start space-x-4">
-        <img loading="lazy" src="assets/driems.jpeg" alt="DRIEMS University Logo" class="h-10 w-10 object-cover rounded-full border border-gray-500 bg-white p-1">
-        <div class="text-left">
-          <h3 class="text-base font-semibold text-text-heading">Bachelor of Pharmacy</h3>
-          <p class="text-text-light text-sm">DRIEMS University, Cuttack, Odisha</p>
-          <p class="text-gray-400 text-xs italic">2024 - 2028</p>
-          <p class="text-text-light text-sm mt-1">Pursuing pharmaceutical sciences with hands-on labs and academic projects.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- EXPERIENCE -->
-<section class="bg-primary-dark py-6 px-4" id="experience">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-2xl font-bold text-accent-green mb-4 text-left">Professional Experience</h2>
-
-    <div class="space-y-4">
-      <div class="flex items-start space-x-4">
-        <img loading="lazy" src="assets/Seal_of_Odisha.svg-removebg-preview.jpg" alt="District Hospital Logo" class="h-10 w-10 object-cover rounded-full border border-gray-500 bg-white p-1">
-        <div class="text-left">
-          <h3 class="text-base font-semibold text-text-heading">Pharmacy Intern</h3>
-          <p class="text-text-light text-sm">District Headquarters Hospital, Dhenkanal</p>
-          <p class="text-gray-400 text-xs italic">May 2025 – June 2025</p>
-          <ul class="list-disc ml-5 text-sm text-text-light space-y-1 mt-1">
-            <li>💉 Learned and practiced proper techniques for administering various types of injections.</li>
-            <li>🗣 Developed strong communication skills, including how to talk to patients—even in critical conditions.</li>
-            <li>🧵 Assisted in the dressing ward and performed stitching procedures under supervision.</li>
-            <li>🚑 Gained real-time experience in the emergency ward—assessing patient conditions and determining when IV saline is needed.</li>
-            <li>💧 Successfully administered IV saline under supervision.</li>
-            <li>💊 Dispensed medications, counseled patients on usage and side effects, and managed prescriptions and inventory.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CERTIFICATIONS -->
-<section class="bg-secondary-dark py-6 px-4" id="certifications">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-2xl font-bold text-accent-green mb-4 text-left">Certifications & Courses</h2>
-
-    <div class="space-y-4">
-      <div class="flex items-start space-x-4">
-        <img loading="lazy" src="https://media.licdn.com/dms/image/v2/C4D0BAQE9ISNDKYUaAw/company-logo_100_100/company-logo_100_100/0/1656682216282/ntusg_logo?e=1752105600&v=beta&t=enzLeMoIgSJNw-9lArmbj_zQVBtcR5o1LDpKAQ-c-YE" alt="NTU Logo" class="h-10 w-10 object-cover rounded-full border border-gray-500 bg-white p-1">
-        <div class="text-left">
-          <h3 class="text-base font-semibold text-text-heading">Introduction to Forensic Science</h3>
-          <p class="text-text-light text-sm">Nanyang Technological University, Singapore</p>
-          <p class="text-gray-400 text-xs italic">Issued May 2025</p>
-          <p class="text-text-light text-sm">Credential ID: <span class="text-accent-green font-mono">112CDIN3OYCC</span></p>
-          <a href="https://www.coursera.org/account/accomplishments/verify/112CDIN3OYCC" target="_blank" class="text-accent-green underline text-sm">View Certificate</a>
-        </div>
+        <a href="mailto:aditipriyadarshiniofficial@gmail.com" aria-label="Email Aditi"
+          class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 ease-out">
+          <i class="fas fa-envelope fa-3x"></i>
+        </a>
+        <a href="https://github.com/your-github-profile" target="_blank" aria-label="GitHub Profile"
+          class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 ease-out">
+          <i class="fab fa-github fa-3x"></i>
+        </a>
       </div>
 
-      <div class="flex items-start space-x-4">
-        <img loading="lazy" src="https://media.licdn.com/dms/image/v2/D4E0BAQE97wiEYgKQFA/company-logo_100_100/company-logo_100_100/0/1719823238436/novartis_logo?e=1753315200&v=beta&t=UmLCwqykoaGgi0-BRxCPz0-Hi8za3Un84oNT1VRSObY" alt="Novartis Logo" class="h-10 w-10 object-cover rounded-full border border-gray-500 bg-white p-1">
-        <div class="text-left">
-          <h3 class="text-base font-semibold text-text-heading">Drug Hunting: The Science of Making New Medicines</h3>
-          <p class="text-text-light text-sm">Novartis</p>
-          <p class="text-gray-400 text-xs italic">Issued Jun 2025</p>
-          <p class="text-text-light text-sm">Credential ID: <span class="text-accent-green font-mono">S3XH0CYR73R2</span></p>
-          <a href="https://www.coursera.org/account/accomplishments/specialization/S3XH0CYR73R2" target="_blank" class="text-accent-green underline text-sm">View Certificate</a>
-        </div>
-      </div>
+      <a href="assets/aditi_resume.pdf" target="_blank" download
+        class="inline-block bg-accent-green text-primary-dark px-8 py-3 sm:px-10 sm:py-4 rounded-full text-lg font-semibold hover:bg-accent-green-dark transition-all duration-300 transform hover:scale-105 shadow-xl animate-fade-in-up"
+        data-aos="fade-up" data-aos-delay="800" data-aos-duration="1200">
+        <i class="fas fa-download mr-3"></i> Download Resume
+      </a>
     </div>
-  </div>
-</section>
+  </section>
 
-
----
-
-<section class="bg-primary-dark py-16 px-6" id="projects"> <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-accent-green section-heading mb-10 text-center" data-aos="fade-down" data-aos-duration="1000">Projects & Research</h2> <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8"> <div class="card p-6 rounded-xl shadow-lg flex flex-col" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000"> <div class="text-accent-green mb-3 text-3xl"><i class="fas fa-tint"></i></div> <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Blood Creatinine & Sugar</h3>
-                <p class="text-gray-400 leading-relaxed text-sm">Conducted biochemical analyses to measure blood creatinine and glucose levels, crucial for clinical diagnostics and patient health assessment. Deepened understanding of diagnostic methodologies and laboratory precision.</p>
-            </div>
-            
-            <div class="card p-6 rounded-xl shadow-lg flex flex-col" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                <div class="text-accent-green mb-3 text-3xl"><i class="fas fa-dna"></i></div>
-                <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Reducing Sugars & Proteins</h3>
-                <p class="text-gray-400 leading-relaxed text-sm">Utilized DNSA method for precise quantification of reducing sugars and Biuret method for accurate protein estimation. Enhanced analytical laboratory skills and understanding of biochemical assays.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
----
-
-<section class="bg-secondary-dark py-16 px-6" id="experiments"> <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-accent-green section-heading mb-10 text-center" data-aos="fade-down" data-aos-duration="1000">Experiments Gallery</h2> <div class="swiper mySwiper rounded-xl shadow-2xl bg-card-bg p-4" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1200">
-                <!-- Swiper -->
-      <div class="swiper-wrapper">
-        <!-- Slide 1 -->
-        <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
-          <img loading="lazy" src="assets/experiments/1.jpg" alt="Blood Creatinine Test" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p class="text-white text-lg font-semibold"></p>
-          </div>
-        </div>
-        
-        <!-- Slide 2 -->
-        <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
-          <img loading="lazy" src="assets/experiments/2.jpg" alt="Quantitative Analysis of Reducing Sugars" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p class="text-white text-lg font-semibold"></p>
-          </div>
-        </div>
-        
-        <!-- Slide 3 -->
-        <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
-          <img loading="lazy" src="assets/experiments/3.jpg" alt="Protein Estimation" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p class="text-white text-lg font-semibold"></p>
-          </div>
-        </div>
-
-<!-- slide 5 and  6 apply later  -->
-
-
-        <!-- Slide 6 -->
-        <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
-          <img loading="lazy" src="assets/experiments/6.jpg" alt="Protein Estimation" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p class="text-white text-lg font-semibold"></p>
-          </div>
-        </div>
-
-        <!-- Slide 7 -->
-        <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
-          <img loading="lazy" src="assets/experiments/7.jpg" alt="Protein Estimation" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p class="text-white text-lg font-semibold"></p>
-          </div>
-        </div>
-
-         <!-- Slide 8 -->
-         <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
-          <img loading="lazy" src="assets/experiments/8.jpg" alt="Protein Estimation" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p class="text-white text-lg font-semibold"></p>
-          </div>
-        </div>
-
-         <!-- Slide 9 -->
-         <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
-          <img loading="lazy" src="assets/experiments/9.jpg" alt="Protein Estimation" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p class="text-white text-lg font-semibold"></p>
-          </div>
-        </div>
-
-         <!-- Slide 10 -->
-         <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
-          <img loading="lazy" src="assets/experiments/10.jpg" alt="Protein Estimation" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p class="text-white text-lg font-semibold"></p>
-          </div>
-        </div>
-
-        <!-- Slide 11 -->
-        <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
-          <img loading="lazy" src="assets/experiments/11.jpg" alt="Protein Estimation" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p class="text-white text-lg font-semibold"></p>
-          </div>
-        </div>
-
-
-        
-        
-        <!-- Add more slides if needed -->
-      </div>
-
-      <!-- Swiper Pagination -->
-      <div class="swiper-pagination mt-4"></div>
-    </div>
-  </div>
-</section>
-</section>
-
----
-
-<section id="contact" class="bg-primary-dark py-16 px-6"> <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-accent-green section-heading mb-10 text-center" data-aos="fade-down" data-aos-duration="1000">Let's Connect</h2> <p class="text-base sm:text-lg text-text-light mb-8 text-center leading-relaxed max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000"> I'm always open to discussing new projects, collaborations, or opportunities in the pharmaceutical field. Feel free to reach out through the form or connect with me directly.
+  <section class="bg-secondary-dark py-16 px-6" id="about">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12">
+      <div class="md:w-1/2" data-aos="fade-right" data-aos-duration="1000">
+        <h2
+          class="text-3xl sm:text-4xl md:text-5xl font-bold text-accent-green section-heading mb-6 text-center md:text-left">
+          About Me</h2>
+        <p class="text-base sm:text-lg text-text-light leading-relaxed mb-5"> Hello! I'm **Aditi Priyadarshini**, an
+          enthusiastic **B.Pharmacy student** with a deep passion for pharmaceutical sciences. My academic journey is
+          fueled by a strong curiosity to explore interdisciplinary fields such as <strong
+            class="text-accent-green">forensic science</strong>, <strong class="text-accent-green">drug
+            development</strong>, and <strong class="text-accent-green">biotechnology</strong>.
         </p>
-            
-        <div class="grid md:grid-cols-2 gap-10 md:gap-12"> <div class="contact-form" data-aos="fade-right" data-aos-duration="1200">
-                <form id="contact-form" class="card p-6 rounded-xl shadow-2xl"> <div id="success-message" class="alert text-center mb-5 text-accent-green bg-accent-green bg-opacity-20 p-3 rounded-md hidden"> <i class="fas fa-check-circle mr-2"></i> Message Sent Successfully! Thank you for reaching out!
-                    </div>
-                    <div id="error-message" class="alert text-center mb-5 text-red-400 bg-red-900 bg-opacity-30 p-3 rounded-md hidden"> <i class="fas fa-exclamation-circle mr-2"></i> Oops! Something went wrong. Please try again.
-                    </div>
-                
-                    <input id="name" name="name" type="text" placeholder="Your Name" required class="w-full p-3 mb-4 bg-secondary-dark text-text-light rounded-lg border border-border-color focus:border-accent-green focus:ring-1 focus:ring-accent-green outline-none transition-all duration-200 text-sm"> <input id="email" name="email" type="email" placeholder="Your Email" required class="w-full p-3 mb-4 bg-secondary-dark text-text-light rounded-lg border border-border-color focus:border-accent-green focus:ring-1 focus:ring-accent-green outline-none transition-all duration-200 text-sm">
-                    
-                    <input id="phone" name="phone" type="tel" placeholder="Your Phone Number (Optional)" class="w-full p-3 mb-4 bg-secondary-dark text-text-light rounded-lg border border-border-color focus:border-accent-green focus:ring-1 focus:ring-accent-green outline-none transition-all duration-200 text-sm">
-                    
-                    <input id="subject" name="subject" type="text" placeholder="Subject" required class="w-full p-3 mb-4 bg-secondary-dark text-text-light rounded-lg border border-border-color focus:border-accent-green focus:ring-1 focus:ring-accent-green outline-none transition-all duration-200 text-sm">
-                    
-                    <textarea id="message" name="message" rows="6" placeholder="Your Message" required class="w-full p-3 mb-5 bg-secondary-dark text-text-light rounded-lg border border-border-color focus:border-accent-green focus:ring-1 focus:ring-accent-green outline-none transition-all duration-200 resize-y text-sm"></textarea> <button type="submit" class="bg-accent-green text-primary-dark px-6 py-3 rounded-full text-base font-semibold hover:bg-accent-green-dark transition-all duration-300 w-full transform hover:scale-105 shadow-lg flex items-center justify-center"> Send Message <i class="fas fa-paper-plane ml-3"></i>
-                    </button>
-                </form>
-            </div>
-            
-            <div class="contact-details flex flex-col justify-center items-center md:items-start text-center md:text-left" data-aos="fade-left" data-aos-duration="1200">
-                <h3 class="text-xl sm:text-3xl font-bold text-accent-green mb-5 font-['Playfair_Display']">Direct Contact</h3> <p class="text-text-light mb-4 text-base flex items-center justify-center md:justify-start"> <i class="fa-solid fa-envelope text-accent-green mr-3 text-xl"></i> 
-                    <a href="mailto:aditipriyadarshiniofficial@gmail.com" class="text-accent-green hover:underline">aditipriyadarshiniofficial@gmail.com</a>
-                </p>
-                <p class="text-text-light mb-4 text-base flex items-center justify-center md:justify-start">
-                    <i class="fa-solid fa-phone text-accent-green mr-3 text-xl"></i> +91 9827885028
-                </p>
-                <p class="text-text-light mb-4 text-base flex items-center justify-center md:justify-start">
-                    <i class="fa-solid fa-location-dot text-accent-green mr-3 text-xl"></i> Odisha, India
-                </p>
-                
-                <div class="social-icons flex space-x-6 mt-5"> <a href="https://www.linkedin.com/in/aditi-priyadarshini/" target="_blank" aria-label="LinkedIn Profile" class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 text-2xl sm:text-3xl"> <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://twitter.com/herprofile" target="_blank" aria-label="Twitter Profile" class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 text-2xl sm:text-3xl">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="https://github.com/your-github-profile" target="_blank" aria-label="GitHub Profile" class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 text-2xl sm:text-3xl">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+        <p class="text-base sm:text-lg text-text-light leading-relaxed">
+          I believe that innovation and scientific understanding are key to advancing healthcare and ensuring public
+          safety. My goal is to build a robust foundation in pharmacy while actively gaining exposure to cutting-edge
+          research and practical applications in these exciting and emerging areas. I'm eager to learn, grow, and
+          contribute meaningfully to the future of healthcare and scientific discovery. Let's connect and explore how we
+          can make a difference!
+        </p>
+      </div>
+      <div class="md:w-1/2 flex justify-center" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+        <img loading="lazy" src="assets/ChatGPT Image Jun 17, 2025, 03_25_44 PM.png" alt="Pharmacy illustration"
+          class="w-full max-w-md">
+      </div>
     </div>
-</section>
+  </section>
 
----
+  ---
 
-<footer class="bg-secondary-dark text-text-light text-center p-6 border-t border-border-color">
+  <section class="bg-primary-dark py-16 px-6" id="skills">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-accent-green section-heading mb-10 text-center"
+        data-aos="fade-down" data-aos-duration="1000">My Core Skills</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div class="card p-6 rounded-xl shadow-lg flex flex-col items-center text-center" data-aos="fade-up"
+          data-aos-delay="100" data-aos-duration="1000">
+          <div class="text-accent-green mb-3 text-4xl"><i class="fas fa-capsules"></i></div>
+          <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Pharmaceutics</h3>
+          <p class="text-gray-400 text-sm">Understanding drug formulation, development, and delivery systems.</p>
+        </div>
+
+        <div class="card p-6 rounded-xl shadow-lg flex flex-col items-center text-center" data-aos="fade-up"
+          data-aos-delay="200" data-aos-duration="1000">
+          <div class="text-accent-green mb-3 text-4xl"><i class="fas fa-microscope"></i></div>
+          <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Human Anatomy & Physiology</h3>
+          <p class="text-gray-400 text-sm">Comprehensive knowledge of the human body's structure and systemic functions.
+          </p>
+        </div>
+
+        <div class="card p-6 rounded-xl shadow-lg flex flex-col items-center text-center" data-aos="fade-up"
+          data-aos-delay="300" data-aos-duration="1000">
+          <div class="text-accent-green mb-3 text-4xl"><i class="fas fa-vial"></i></div>
+          <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Biochemistry</h3>
+          <p class="text-gray-400 text-sm">Basic understanding of biochemical processes in health and disease.</p>
+        </div>
+
+        <div class="card p-6 rounded-xl shadow-lg flex flex-col items-center text-center" data-aos="fade-up"
+          data-aos-delay="400" data-aos-duration="1000">
+          <div class="text-accent-green mb-3 text-4xl"><i class="fas fa-flask"></i></div>
+          <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Pharmaceutical Analysis</h3>
+          <p class="text-gray-400 text-sm">Skills in ensuring quality and safety of pharmaceutical products.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  ---
+  <!-- EDUCATION -->
+  <section class="bg-secondary-dark py-6 px-4" id="education">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-2xl font-bold text-accent-green mb-4 text-left">My Educational Journey</h2>
+
+      <div class="space-y-4">
+        <div class="flex items-start space-x-4">
+          <img loading="lazy" src="assets/driems.jpeg" alt="DRIEMS University Logo"
+            class="h-10 w-10 object-cover rounded-full border border-gray-500 bg-white p-1">
+          <div class="text-left">
+            <h3 class="text-base font-semibold text-text-heading">Bachelor of Pharmacy</h3>
+            <p class="text-text-light text-sm">DRIEMS University, Cuttack, Odisha</p>
+            <p class="text-gray-400 text-xs italic">2024 - 2028</p>
+            <p class="text-text-light text-sm mt-1">Pursuing pharmaceutical sciences with hands-on labs and academic
+              projects.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="bg-primary-dark py-6 px-4" id="experience">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-2xl font-bold text-accent-green mb-4 text-left">Professional Experience</h2>
+
+      <div class="space-y-4">
+        <div class="flex items-start space-x-4">
+          <img loading="lazy" src="assets/Seal_of_Odisha.svg-removebg-preview.jpg" alt="District Hospital Logo"
+            class="h-10 w-10 object-cover rounded-full border border-gray-500 bg-white p-1">
+          <div class="text-left">
+            <h3 class="text-base font-semibold text-text-heading">Pharmacy Intern</h3>
+            <p class="text-text-light text-sm">District Headquarters Hospital, Dhenkanal</p>
+            <p class="text-gray-400 text-xs italic">May 2025 – June 2025</p>
+            <ul class="list-disc ml-5 text-sm text-text-light space-y-1 mt-1">
+              <li>💉 Learned and practiced proper techniques for administering various types of injections.</li>
+              <li>🗣 Developed strong communication skills, including how to talk to patients—even in critical
+                conditions.</li>
+              <li>🧵 Assisted in the dressing ward and performed stitching procedures under supervision.</li>
+              <li>🚑 Gained real-time experience in the emergency ward—assessing patient conditions and determining when
+                IV saline is needed.</li>
+              <li>💧 Successfully administered IV saline under supervision.</li>
+              <li>💊 Dispensed medications, counseled patients on usage and side effects, and managed prescriptions and
+                inventory.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section class="bg-secondary-dark py-6 px-4" id="certifications">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-2xl font-bold text-accent-green mb-4 text-left">Certifications & Courses</h2>
+
+      <div class="space-y-4">
+        <div class="flex items-start space-x-4">
+          <img loading="lazy"
+            src="https://media.licdn.com/dms/image/v2/C4D0BAQE9ISNDKYUaAw/company-logo_100_100/company-logo_100_100/0/1656682216282/ntusg_logo?e=1752105600&v=beta&t=enzLeMoIgSJNw-9lArmbj_zQVBtcR5o1LDpKAQ-c-YE"
+            alt="NTU Logo" class="h-10 w-10 object-cover rounded-full border border-gray-500 bg-white p-1">
+          <div class="text-left">
+            <h3 class="text-base font-semibold text-text-heading">Introduction to Forensic Science</h3>
+            <p class="text-text-light text-sm">Nanyang Technological University, Singapore</p>
+            <p class="text-gray-400 text-xs italic">Issued May 2025</p>
+            <p class="text-text-light text-sm">Credential ID: <span
+                class="text-accent-green font-mono">112CDIN3OYCC</span></p>
+            <a href="https://www.coursera.org/account/accomplishments/verify/112CDIN3OYCC" target="_blank"
+              class="text-accent-green underline text-sm">View Certificate</a>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4">
+          <img loading="lazy"
+            src="https://media.licdn.com/dms/image/v2/D4E0BAQE97wiEYgKQFA/company-logo_100_100/company-logo_100_100/0/1719823238436/novartis_logo?e=1753315200&v=beta&t=UmLCwqykoaGgi0-BRxCPz0-Hi8za3Un84oNT1VRSObY"
+            alt="Novartis Logo" class="h-10 w-10 object-cover rounded-full border border-gray-500 bg-white p-1">
+          <div class="text-left">
+            <h3 class="text-base font-semibold text-text-heading">Drug Hunting: The Science of Making New Medicines</h3>
+            <p class="text-text-light text-sm">Novartis</p>
+            <p class="text-gray-400 text-xs italic">Issued Jun 2025</p>
+            <p class="text-text-light text-sm">Credential ID: <span
+                class="text-accent-green font-mono">S3XH0CYR73R2</span></p>
+            <a href="https://www.coursera.org/account/accomplishments/specialization/S3XH0CYR73R2" target="_blank"
+              class="text-accent-green underline text-sm">View Certificate</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  ---
+
+  <section class="bg-primary-dark py-16 px-6" id="projects">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-accent-green section-heading mb-10 text-center"
+        data-aos="fade-down" data-aos-duration="1000">Projects & Research</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+        <div class="card p-6 rounded-xl shadow-lg flex flex-col" data-aos="fade-up" data-aos-delay="100"
+          data-aos-duration="1000">
+          <div class="text-accent-green mb-3 text-3xl"><i class="fas fa-tint"></i></div>
+          <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Blood Creatinine & Sugar</h3>
+          <p class="text-gray-400 leading-relaxed text-sm">Conducted biochemical analyses to measure blood creatinine
+            and glucose levels, crucial for clinical diagnostics and patient health assessment. Deepened understanding
+            of diagnostic methodologies and laboratory precision.</p>
+        </div>
+
+        <div class="card p-6 rounded-xl shadow-lg flex flex-col" data-aos="fade-up" data-aos-delay="200"
+          data-aos-duration="1000">
+          <div class="text-accent-green mb-3 text-3xl"><i class="fas fa-dna"></i></div>
+          <h3 class="text-xl sm:text-2xl font-semibold text-text-heading mb-2">Reducing Sugars & Proteins</h3>
+          <p class="text-gray-400 leading-relaxed text-sm">Utilized DNSA method for precise quantification of reducing
+            sugars and Biuret method for accurate protein estimation. Enhanced analytical laboratory skills and
+            understanding of biochemical assays.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  ---
+
+  <section class="bg-secondary-dark py-16 px-6" id="experiments">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-accent-green section-heading mb-10 text-center"
+        data-aos="fade-down" data-aos-duration="1000">Experiments Gallery</h2>
+      <div class="swiper mySwiper rounded-xl shadow-2xl bg-card-bg p-4" data-aos="fade-up" data-aos-delay="100"
+        data-aos-duration="1200">
+        <!-- Swiper -->
+        <div class="swiper-wrapper">
+          <!-- Slide 1 -->
+          <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
+            <img loading="lazy" src="assets/experiments/1.jpg" alt="Blood Creatinine Test"
+              class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p class="text-white text-lg font-semibold"></p>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
+            <img loading="lazy" src="assets/experiments/2.jpg" alt="Quantitative Analysis of Reducing Sugars"
+              class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p class="text-white text-lg font-semibold"></p>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
+            <img loading="lazy" src="assets/experiments/3.jpg" alt="Protein Estimation"
+              class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p class="text-white text-lg font-semibold"></p>
+            </div>
+          </div>
+
+          <!-- slide 5 and  6 apply later  -->
+
+
+          <!-- Slide 6 -->
+          <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
+            <img loading="lazy" src="assets/experiments/6.jpg" alt="Protein Estimation"
+              class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p class="text-white text-lg font-semibold"></p>
+            </div>
+          </div>
+
+          <!-- Slide 7 -->
+          <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
+            <img loading="lazy" src="assets/experiments/7.jpg" alt="Protein Estimation"
+              class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p class="text-white text-lg font-semibold"></p>
+            </div>
+          </div>
+
+          <!-- Slide 8 -->
+          <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
+            <img loading="lazy" src="assets/experiments/8.jpg" alt="Protein Estimation"
+              class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p class="text-white text-lg font-semibold"></p>
+            </div>
+          </div>
+
+          <!-- Slide 9 -->
+          <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
+            <img loading="lazy" src="assets/experiments/9.jpg" alt="Protein Estimation"
+              class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p class="text-white text-lg font-semibold"></p>
+            </div>
+          </div>
+
+          <!-- Slide 10 -->
+          <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
+            <img loading="lazy" src="assets/experiments/10.jpg" alt="Protein Estimation"
+              class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p class="text-white text-lg font-semibold"></p>
+            </div>
+          </div>
+
+          <!-- Slide 11 -->
+          <div class="swiper-slide group relative overflow-hidden rounded-lg shadow-lg mx-auto w-80 h-60">
+            <img loading="lazy" src="assets/experiments/11.jpg" alt="Protein Estimation"
+              class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110" />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p class="text-white text-lg font-semibold"></p>
+            </div>
+          </div>
+
+
+
+
+          <!-- Add more slides if needed -->
+        </div>
+
+        <!-- Swiper Pagination -->
+        <div class="swiper-pagination mt-4"></div>
+      </div>
+    </div>
+  </section>
+  </section>
+
+  ---
+
+  <section id="contact" class="bg-primary-dark py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-accent-green section-heading mb-10 text-center"
+        data-aos="fade-down" data-aos-duration="1000">Let's Connect</h2>
+      <p class="text-base sm:text-lg text-text-light mb-8 text-center leading-relaxed max-w-2xl mx-auto"
+        data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000"> I'm always open to discussing new projects,
+        collaborations, or opportunities in the pharmaceutical field. Feel free to reach out through the form or connect
+        with me directly.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-10 md:gap-12">
+        <div class="contact-form" data-aos="fade-right" data-aos-duration="1200">
+          <form id="contact-form" class="card p-6 rounded-xl shadow-2xl">
+            <div id="success-message"
+              class="alert text-center mb-5 text-accent-green bg-accent-green bg-opacity-20 p-3 rounded-md hidden"> <i
+                class="fas fa-check-circle mr-2"></i> Message Sent Successfully! Thank you for reaching out!
+            </div>
+            <div id="error-message"
+              class="alert text-center mb-5 text-red-400 bg-red-900 bg-opacity-30 p-3 rounded-md hidden"> <i
+                class="fas fa-exclamation-circle mr-2"></i> Oops! Something went wrong. Please try again.
+            </div>
+
+            <input id="name" name="name" type="text" placeholder="Your Name" required
+              class="w-full p-3 mb-4 bg-secondary-dark text-text-light rounded-lg border border-border-color focus:border-accent-green focus:ring-1 focus:ring-accent-green outline-none transition-all duration-200 text-sm">
+            <input id="email" name="email" type="email" placeholder="Your Email" required
+              class="w-full p-3 mb-4 bg-secondary-dark text-text-light rounded-lg border border-border-color focus:border-accent-green focus:ring-1 focus:ring-accent-green outline-none transition-all duration-200 text-sm">
+
+            <input id="phone" name="phone" type="tel" placeholder="Your Phone Number (Optional)"
+              class="w-full p-3 mb-4 bg-secondary-dark text-text-light rounded-lg border border-border-color focus:border-accent-green focus:ring-1 focus:ring-accent-green outline-none transition-all duration-200 text-sm">
+
+            <input id="subject" name="subject" type="text" placeholder="Subject" required
+              class="w-full p-3 mb-4 bg-secondary-dark text-text-light rounded-lg border border-border-color focus:border-accent-green focus:ring-1 focus:ring-accent-green outline-none transition-all duration-200 text-sm">
+
+            <textarea id="message" name="message" rows="6" placeholder="Your Message" required
+              class="w-full p-3 mb-5 bg-secondary-dark text-text-light rounded-lg border border-border-color focus:border-accent-green focus:ring-1 focus:ring-accent-green outline-none transition-all duration-200 resize-y text-sm"></textarea>
+            <button type="submit"
+              class="bg-accent-green text-primary-dark px-6 py-3 rounded-full text-base font-semibold hover:bg-accent-green-dark transition-all duration-300 w-full transform hover:scale-105 shadow-lg flex items-center justify-center">
+              Send Message <i class="fas fa-paper-plane ml-3"></i>
+            </button>
+          </form>
+        </div>
+
+        <div class="contact-details flex flex-col justify-center items-center md:items-start text-center md:text-left"
+          data-aos="fade-left" data-aos-duration="1200">
+          <h3 class="text-xl sm:text-3xl font-bold text-accent-green mb-5 font-['Playfair_Display']">Direct Contact</h3>
+          <p class="text-text-light mb-4 text-base flex items-center justify-center md:justify-start"> <i
+              class="fa-solid fa-envelope text-accent-green mr-3 text-xl"></i>
+            <a href="mailto:aditipriyadarshiniofficial@gmail.com"
+              class="text-accent-green hover:underline">aditipriyadarshiniofficial@gmail.com</a>
+          </p>
+          <p class="text-text-light mb-4 text-base flex items-center justify-center md:justify-start">
+            <i class="fa-solid fa-phone text-accent-green mr-3 text-xl"></i> +91 9827885028
+          </p>
+          <p class="text-text-light mb-4 text-base flex items-center justify-center md:justify-start">
+            <i class="fa-solid fa-location-dot text-accent-green mr-3 text-xl"></i> Odisha, India
+          </p>
+
+          <div class="social-icons flex space-x-6 mt-5"> <a href="https://www.linkedin.com/in/aditi-priyadarshini/"
+              target="_blank" aria-label="LinkedIn Profile"
+              class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 text-2xl sm:text-3xl">
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://twitter.com/herprofile" target="_blank" aria-label="Twitter Profile"
+              class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 text-2xl sm:text-3xl">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://github.com/your-github-profile" target="_blank" aria-label="GitHub Profile"
+              class="text-text-light hover:text-accent-green transform hover:scale-125 transition-all duration-300 text-2xl sm:text-3xl">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  ---
+
+  <footer class="bg-secondary-dark text-text-light text-center p-6 border-t border-border-color">
     <p class="text-gray-400 text-sm">© 2025 Aditi Priyadarshini | All Rights Reserved</p>
-</footer>
+  </footer>
 
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
-<script>
+  <script>
     // Initialize AOS
     AOS.init({
-        duration: 1000,
-        once: true,
-        easing: 'ease-in-out',
-        mirror: false
+      duration: 1000,
+      once: true,
+      easing: 'ease-in-out',
+      mirror: false
     });
 
     // Initialize Swiper for the Experiments Gallery
     var swiper = new Swiper(".mySwiper", {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        loop: true,
-        autoplay: {
-            delay: 4000,
-            disableOnInteraction: false,
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: true,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: { // Optional: Add navigation arrows if desired
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: { // sm breakpoint
+          slidesPerView: 2,
+          spaceBetween: 25,
         },
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
+        1024: { // lg breakpoint
+          slidesPerView: 3,
+          spaceBetween: 30,
         },
-        navigation: { // Optional: Add navigation arrows if desired
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        breakpoints: {
-            640: { // sm breakpoint
-                slidesPerView: 2,
-                spaceBetween: 25,
-            },
-            1024: { // lg breakpoint
-                slidesPerView: 3,
-                spaceBetween: 30,
-            },
-        },
+      },
     });
 
     // Mobile Menu Toggle
@@ -532,53 +560,54 @@
     const menuLinks = document.querySelectorAll('.menu-link');
 
     menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.remove('translate-x-full');
+      mobileMenu.classList.remove('translate-x-full');
     });
 
     closeBtn.addEventListener('click', () => {
-        mobileMenu.classList.add('translate-x-full');
+      mobileMenu.classList.add('translate-x-full');
     });
 
     menuLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.add('translate-x-full');
-        });
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('translate-x-full');
+      });
     });
 
     // EmailJS Integration for Contact Form
     emailjs.init('UfV4IgFhAzpK6Io7l'); // Replace with your actual EmailJS Public Key
 
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-        event.preventDefault();
+    document.getElementById('contact-form').addEventListener('submit', function (event) {
+      event.preventDefault();
 
-        const successMessage = document.getElementById('success-message');
-        const errorMessage = document.getElementById('error-message');
+      const successMessage = document.getElementById('success-message');
+      const errorMessage = document.getElementById('error-message');
 
-        // Reset messages
-        successMessage.classList.add('hidden');
-        errorMessage.classList.add('hidden');
+      // Reset messages
+      successMessage.classList.add('hidden');
+      errorMessage.classList.add('hidden');
 
-        emailjs.sendForm('service_your_service_id', 'template_your_template_id', this) // Replace with your Service ID and Template ID
-            .then(function() {
-                console.log('SUCCESS!');
-                successMessage.classList.remove('hidden');
-                document.getElementById('contact-form').reset(); // Clear the form
-            }, function(error) {
-                console.error('FAILED...', error);
-                errorMessage.classList.remove('hidden');
-            });
+      emailjs.sendForm('service_your_service_id', 'template_your_template_id', this) // Replace with your Service ID and Template ID
+        .then(function () {
+          console.log('SUCCESS!');
+          successMessage.classList.remove('hidden');
+          document.getElementById('contact-form').reset(); // Clear the form
+        }, function (error) {
+          console.error('FAILED...', error);
+          errorMessage.classList.remove('hidden');
+        });
     });
 
     // Smooth scrolling for anchor links (if not using tailwind's scroll-smooth)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
         });
+      });
     });
-</script>
+  </script>
 
 </body>
+
 </html>
