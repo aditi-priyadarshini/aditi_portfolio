@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin — Pharmacy Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#07090f;--bg2:#0d1117;--bg3:#111827;
+  --teal:#00e5c0;--teal2:#00b4d8;--violet:#a855f7;
+  --text:#e8eaf0;--muted:#6b7280;--border:rgba(255,255,255,0.07);
+  --danger:#ef4444;--success:#22c55e;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;min-height:100vh;}
+
+/* ── LOGIN SCREEN ─────────────────────────────────────────── */
+#login-screen{display:none;position:fixed;inset:0;background:var(--bg);z-index:999;align-items:center;justify-content:center;padding:1.5rem;}
+#login-screen.visible{display:flex;}
+.login-bg-glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(0,229,192,0.07),transparent 70%);pointer-events:none;}
+.login-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:420px;position:relative;z-index:1;}
+.login-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;color:var(--teal);text-align:center;margin-bottom:.4rem;}
+.login-sub{text-align:center;color:var(--muted);font-size:.875rem;margin-bottom:2rem;}
+.login-group{margin-bottom:1.25rem;}
+.login-group label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.5rem;}
+.login-group input{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.875rem 1rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+.login-group input:focus{border-color:var(--teal);}
+.login-btn{width:100%;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#07090f;border:none;padding:.9rem;border-radius:8px;font-weight:700;font-family:'Syne',sans-serif;font-size:1rem;cursor:pointer;transition:opacity .2s;margin-top:.25rem;}
+.login-btn:hover{opacity:.88;}
+.login-btn:disabled{opacity:.4;cursor:not-allowed;}
+.login-err{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;padding:.7rem 1rem;border-radius:8px;font-size:.85rem;margin-top:.875rem;display:none;}
+.login-back{display:block;text-align:center;margin-top:1.5rem;color:var(--muted);font-size:.85rem;text-decoration:none;transition:color .2s;}
+.login-back:hover{color:var(--teal);}
+
+/* SIDEBAR */
+.sidebar{width:240px;flex:0 0 240px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:50;overflow-y:auto;}
+.sidebar-logo{padding:1.5rem 1.25rem 1rem;font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--teal);border-bottom:1px solid var(--border);}
+.sidebar-logo span{font-size:.7rem;color:var(--muted);display:block;font-weight:400;margin-top:.1rem;letter-spacing:.05em;}
+.sidebar-nav{padding:.75rem 0;flex:1;}
+.nav-item{display:flex;align-items:center;gap:.75rem;padding:.7rem 1.25rem;color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500;cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.03);}
+.nav-item.active{color:var(--teal);background:rgba(0,229,192,0.06);border-right:2px solid var(--teal);}
+.nav-item svg{width:16px;height:16px;flex:0 0 16px;}
+.nav-section{padding:.5rem 1.25rem .25rem;font-size:.65rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-top:.5rem;}
+.sidebar-bottom{padding:1rem 1.25rem;border-top:1px solid var(--border);}
+.logout-btn{display:flex;align-items:center;gap:.5rem;color:var(--muted);font-size:.8rem;cursor:pointer;background:none;border:none;transition:color .15s;}
+.logout-btn:hover{color:var(--danger);}
+
+/* MAIN */
+.main{margin-left:240px;flex:1;min-height:100vh;}
+.topbar{padding:1rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg);}
+.topbar-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;}
+.topbar-actions{display:flex;gap:.75rem;align-items:center;}
+.view-site-btn{display:flex;align-items:center;gap:.4rem;color:var(--muted);font-size:.8rem;text-decoration:none;border:1px solid var(--border);padding:.4rem .875rem;border-radius:6px;transition:all .2s;}
+.view-site-btn:hover{color:var(--teal);border-color:var(--teal);}
+.content{padding:2rem;}
+
+/* PANELS */
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* DASHBOARD */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-bottom:2rem;}
+.stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.25rem;}
+.stat-num{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;color:var(--teal);line-height:1;}
+.stat-label{color:var(--muted);font-size:.8rem;margin-top:.25rem;text-transform:uppercase;letter-spacing:.06em;}
+.messages-list{background:var(--bg3);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.msg-item{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;gap:1rem;align-items:flex-start;}
+.msg-item:last-child{border-bottom:none;}
+.msg-item.unread{border-left:3px solid var(--teal);}
+.msg-name{font-weight:600;font-size:.875rem;margin-bottom:.2rem;}
+.msg-email{color:var(--muted);font-size:.75rem;margin-bottom:.4rem;}
+.msg-text{color:#9ca3af;font-size:.85rem;line-height:1.6;}
+.msg-date{color:var(--muted);font-size:.75rem;white-space:nowrap;}
+.msg-mark{background:none;border:1px solid var(--border);color:var(--muted);padding:.25rem .6rem;border-radius:4px;font-size:.7rem;cursor:pointer;transition:all .2s;margin-top:.5rem;}
+.msg-mark:hover{color:var(--teal);border-color:var(--teal);}
+
+/* SECTION HEADER */
+.section-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
+.section-hdr h2{font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;}
+.add-btn{display:flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#07090f;border:none;padding:.5rem 1.25rem;border-radius:8px;font-weight:700;font-size:.85rem;font-family:'Syne',sans-serif;cursor:pointer;transition:opacity .2s;}
+.add-btn:hover{opacity:.88;}
+
+/* TABLE */
+.table-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:12px;overflow:auto;}
+table{width:100%;border-collapse:collapse;min-width:500px;}
+th{padding:.75rem 1rem;text-align:left;font-size:.7rem;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border);}
+td{padding:.875rem 1rem;font-size:.875rem;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+.td-actions{display:flex;gap:.5rem;}
+.edit-btn,.del-btn{padding:.3rem .75rem;border-radius:5px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid;transition:all .15s;}
+.edit-btn{background:transparent;border-color:var(--border);color:var(--muted);}
+.edit-btn:hover{color:var(--teal);border-color:var(--teal);}
+.del-btn{background:transparent;border-color:var(--border);color:var(--muted);}
+.del-btn:hover{color:var(--danger);border-color:var(--danger);}
+.badge{display:inline-block;padding:.2rem .55rem;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.badge-teal{background:rgba(0,229,192,0.1);color:var(--teal);border:1px solid rgba(0,229,192,0.2);}
+.badge-violet{background:rgba(168,85,247,0.1);color:#c084fc;border:1px solid rgba(168,85,247,0.2);}
+.badge-green{background:rgba(34,197,94,0.1);color:#4ade80;border:1px solid rgba(34,197,94,0.2);}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;}
+.modal-head{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.modal-head h3{font-family:'Syne',sans-serif;font-weight:700;}
+.modal-close{background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;padding:.2rem;}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:1.5rem;}
+.form-group{margin-bottom:1.1rem;}
+.form-group label{display:block;font-size:.75rem;font-weight:600;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.4rem;}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.75rem .9rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.875rem;outline:none;transition:border-color .2s;resize:none;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--teal);}
+.form-group select option{background:var(--bg2);}
+.form-group textarea{height:100px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.modal-foot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:.75rem;justify-content:flex-end;}
+.save-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#07090f;border:none;padding:.65rem 1.5rem;border-radius:8px;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;transition:opacity .2s;}
+.save-btn:hover{opacity:.88;}
+.save-btn:disabled{opacity:.4;cursor:not-allowed;}
+.cancel-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.65rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.875rem;transition:all .2s;}
+.cancel-btn:hover{color:var(--text);}
+.modal-err{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);padding:.6rem .9rem;border-radius:6px;font-size:.82rem;margin-top:.75rem;display:none;}
+.modal-ok{background:rgba(34,197,94,0.1);color:#4ade80;border:1px solid rgba(34,197,94,0.2);padding:.6rem .9rem;border-radius:6px;font-size:.82rem;margin-top:.75rem;display:none;}
+
+/* Profile image upload */
+.img-upload-area{border:1.5px dashed var(--border);border-radius:10px;padding:2rem;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:.75rem;}
+.img-upload-area:hover{border-color:var(--teal);}
+.img-upload-area input{display:none;}
+.img-preview{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto .75rem;display:block;border:2px solid var(--teal);}
+.img-upload-hint{color:var(--muted);font-size:.8rem;}
+.check-row{display:flex;align-items:center;gap:.5rem;margin-top:.25rem;}
+.check-row input[type=checkbox]{width:auto;accent-color:var(--teal);}
+.check-row label{font-size:.875rem;color:var(--text);text-transform:none;letter-spacing:0;}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.875rem 1.25rem;font-size:.875rem;z-index:300;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;}
+.toast.show{opacity:1;transform:none;}
+.toast.success{border-color:rgba(34,197,94,0.3);color:#4ade80;}
+.toast.error{border-color:rgba(239,68,68,0.3);color:#f87171;}
+
+/* empty */
+.empty{text-align:center;padding:3rem;color:var(--muted);font-size:.875rem;}
+
+/* proficiency range */
+input[type=range]{padding:0;accent-color:var(--teal);height:4px;}
+.range-val{color:var(--teal);font-size:.8rem;font-weight:700;margin-left:.5rem;}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform .3s;}
+  .sidebar.open{transform:none;}
+  .main{margin-left:0;}
+  .form-row{grid-template-columns:1fr;}
+  .hamburger-admin{display:flex;}
+}
+.hamburger-admin{display:none;background:none;border:none;cursor:pointer;padding:.5rem;}
+.hamburger-admin span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-bg-glow"></div>
+  <div class="login-card">
+    <div class="login-logo">Rx Admin</div>
+    <p class="login-sub">Sign in to manage your portfolio</p>
+    <form onsubmit="doLogin(event)">
+      <div class="login-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="admin@email.com" required autocomplete="email"/>
+      </div>
+      <div class="login-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password"/>
+      </div>
+      <button type="submit" class="login-btn" id="login-submit-btn">Sign In</button>
+      <div class="login-err" id="login-err"></div>
+    </form>
+    <a href="/" class="login-back">← Back to Portfolio</a>
+  </div>
+</div>
+
+<!-- ADMIN CONTENT (hidden until authenticated) -->
+<div id="admin-content" style="display:contents;">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">Rx Admin<span>Pharmacy Portfolio</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <button class="nav-item active" data-panel="dashboard" onclick="showPanel('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </button>
+    <div class="nav-section">Content</div>
+    <button class="nav-item" data-panel="profile" onclick="showPanel('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Profile
+    </button>
+    <button class="nav-item" data-panel="skills" onclick="showPanel('skills')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+      Skills
+    </button>
+    <button class="nav-item" data-panel="projects" onclick="showPanel('projects')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg>
+      Projects
+    </button>
+    <button class="nav-item" data-panel="experience" onclick="showPanel('experience')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+      Experience
+    </button>
+    <button class="nav-item" data-panel="certifications" onclick="showPanel('certifications')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+      Certifications
+    </button>
+    <button class="nav-item" data-panel="education" onclick="showPanel('education')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+      Education
+    </button>
+    <div class="nav-section">Inbox</div>
+    <button class="nav-item" data-panel="messages" onclick="showPanel('messages')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Messages <span id="unread-badge" style="margin-left:auto;background:var(--teal);color:#07090f;border-radius:10px;padding:.1rem .45rem;font-size:.65rem;font-weight:800;display:none">0</span>
+    </button>
+  </nav>
+  <div class="sidebar-bottom">
+    <button class="logout-btn" onclick="doLogout()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Sign Out
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <button class="hamburger-admin" onclick="document.getElementById('sidebar').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+    </div>
+    <div class="topbar-actions">
+      <a href="/" target="_blank" class="view-site-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View Site
+      </a>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="stats-grid" id="dash-stats"></div>
+      <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;">Recent Messages</h3>
+      <div class="messages-list" id="dash-messages"><div class="empty">Loading...</div></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="panel" id="panel-profile">
+      <div class="section-hdr">
+        <h2>Profile</h2>
+        <button class="add-btn" onclick="openProfileModal()">Edit Profile</button>
+      </div>
+      <div id="profile-preview" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.5rem;">
+        <div class="empty">Loading...</div>
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="panel" id="panel-skills">
+      <div class="section-hdr"><h2>Skills</h2><button class="add-btn" onclick="openModal('skills')">+ Add Skill</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Name</th><th>Category</th><th>Proficiency</th><th>Actions</th></tr></thead>
+        <tbody id="tbl-skills"></tbody>
+      </table></div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="panel" id="panel-projects">
+      <div class="section-hdr"><h2>Projects</h2><button class="add-btn" onclick="openModal('projects')">+ Add Project</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Title</th><th>Tags</th><th>Featured</th><th>Actions</th></tr></thead>
+        <tbody id="tbl-projects"></tbody>
+      </table></div>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div class="panel" id="panel-experience">
+      <div class="section-hdr"><h2>Experience</h2><button class="add-btn" onclick="openModal('experience')">+ Add Experience</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Title</th><th>Organization</th><th>Type</th><th>Dates</th><th>Actions</th></tr></thead>
+        <tbody id="tbl-experience"></tbody>
+      </table></div>
+    </div>
+
+    <!-- CERTIFICATIONS -->
+    <div class="panel" id="panel-certifications">
+      <div class="section-hdr"><h2>Certifications</h2><button class="add-btn" onclick="openModal('certifications')">+ Add Cert</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Name</th><th>Issuing Body</th><th>Issue Date</th><th>Actions</th></tr></thead>
+        <tbody id="tbl-certifications"></tbody>
+      </table></div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="panel" id="panel-education">
+      <div class="section-hdr"><h2>Education</h2><button class="add-btn" onclick="openModal('education')">+ Add Education</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Degree</th><th>Institution</th><th>Dates</th><th>Current</th><th>Actions</th></tr></thead>
+        <tbody id="tbl-education"></tbody>
+      </table></div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="panel" id="panel-messages">
+      <div class="section-hdr"><h2>Messages</h2></div>
+      <div class="messages-list" id="all-messages"><div class="empty">Loading...</div></div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+</div><!-- /admin-content -->
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg" style="display:none" onclick="closeModalBg(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-title">Add Item</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot">
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="save-btn" id="modal-save-btn" onclick="saveModal()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = "{{ supabase_url }}";
+const SUPABASE_ANON_KEY = "{{ supabase_anon_key }}";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let token = null;
+let currentTable = null;
+let editId = null;
+let profileData = null;
+
+// ── AUTH ─────────────────────────────────────────────────────
+function showLogin() {
+  document.getElementById("login-screen").classList.add("visible");
+  document.getElementById("admin-content").style.display = "none";
+  setTimeout(() => document.getElementById("login-email").focus(), 100);
+}
+
+function showAdmin() {
+  document.getElementById("login-screen").classList.remove("visible");
+  document.getElementById("admin-content").style.display = "contents";
+  loadAll();
+}
+
+async function checkAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { showLogin(); return; }
+  token = session.access_token;
+  sb.auth.onAuthStateChange((event, sess) => {
+    token = sess?.access_token || null;
+    if (!token) showLogin();
+  });
+  showAdmin();
+}
+
+async function doLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById("login-submit-btn");
+  const err = document.getElementById("login-err");
+  btn.disabled = true; btn.textContent = "Signing in...";
+  err.style.display = "none";
+  const { data, error } = await sb.auth.signInWithPassword({
+    email: document.getElementById("login-email").value,
+    password: document.getElementById("login-password").value,
+  });
+  if (error) {
+    err.textContent = error.message || "Login failed. Check your credentials.";
+    err.style.display = "block";
+    btn.disabled = false; btn.textContent = "Sign In";
+  } else {
+    token = data.session.access_token;
+    showAdmin();
+  }
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  token = null;
+  showLogin();
+}
+
+// ── API HELPER ───────────────────────────────────────────────
+async function api(method, path, body) {
+  const opts = { method, headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token } };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(path, opts);
+  return r.json();
+}
+
+// ── PANEL NAV ────────────────────────────────────────────────
+const panelTitles = { dashboard:"Dashboard", profile:"Profile", skills:"Skills", projects:"Projects", experience:"Experience", certifications:"Certifications", education:"Education", messages:"Messages" };
+function showPanel(name) {
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  document.getElementById("panel-" + name).classList.add("active");
+  document.querySelector(`[data-panel="${name}"]`).classList.add("active");
+  document.getElementById("topbar-title").textContent = panelTitles[name] || name;
+  if (name === "messages") loadMessages();
+}
+
+// ── LOAD ALL ─────────────────────────────────────────────────
+async function loadAll() {
+  await Promise.all([loadDashboard(), loadProfile(), loadTable("skills"), loadTable("projects"), loadTable("experience"), loadTable("certifications"), loadTable("education")]);
+}
+
+async function loadDashboard() {
+  const tables = ["skills", "projects", "experience", "certifications", "education", "messages"];
+  const counts = await Promise.all(tables.map(t => api("GET", "/api/admin/" + t)));
+  const stats = document.getElementById("dash-stats");
+  stats.innerHTML = tables.map((t, i) => `
+    <div class="stat-card">
+      <div class="stat-num">${(counts[i].data || []).length}</div>
+      <div class="stat-label">${t}</div>
+    </div>`).join("");
+  const msgs = (counts[5].data || []).slice().reverse().slice(0, 5);
+  const unread = counts[5].data?.filter(m => !m.is_read).length || 0;
+  if (unread > 0) { const b = document.getElementById("unread-badge"); b.textContent = unread; b.style.display = "inline"; }
+  renderMessagesList(msgs, "dash-messages");
+}
+
+function renderMessagesList(msgs, containerId) {
+  const el = document.getElementById(containerId);
+  if (!msgs.length) { el.innerHTML = '<div class="empty">No messages yet.</div>'; return; }
+  el.innerHTML = msgs.map(m => `
+    <div class="msg-item ${m.is_read ? "" : "unread"}" id="msg-${m.id}">
+      <div style="flex:1">
+        <div class="msg-name">${m.name || "Unknown"}</div>
+        <div class="msg-email">${m.email || ""}</div>
+        <div class="msg-text">${m.message || ""}</div>
+        ${!m.is_read ? `<button class="msg-mark" onclick="markRead('${m.id}')">Mark as read</button>` : ""}
+      </div>
+      <div class="msg-date">${formatDate(m.created_at)}</div>
+    </div>`).join("");
+}
+
+async function loadMessages() {
+  const res = await api("GET", "/api/admin/messages");
+  renderMessagesList((res.data || []).slice().reverse(), "all-messages");
+}
+
+async function markRead(id) {
+  await api("PUT", "/api/admin/messages/" + id, { is_read: true });
+  const el = document.getElementById("msg-" + id);
+  if (el) { el.classList.remove("unread"); el.querySelector(".msg-mark")?.remove(); }
+  showToast("Marked as read", "success");
+}
+
+function formatDate(d) {
+  if (!d) return "";
+  return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+// ── PROFILE ──────────────────────────────────────────────────
+async function loadProfile() {
+  const res = await api("GET", "/api/admin/profile");
+  profileData = (res.data || [])[0] || {};
+  const el = document.getElementById("profile-preview");
+  const p = profileData;
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:80px 1fr;gap:1.5rem;align-items:start;">
+      ${p.photo_url ? `<img src="${p.photo_url}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--teal);"/>` : `<div style="width:80px;height:80px;border-radius:50%;background:var(--bg);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.75rem;">Photo</div>`}
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.25rem;margin-bottom:.25rem;">${p.name || "—"}</div>
+        <div style="color:var(--teal);font-size:.9rem;margin-bottom:.75rem;">${p.tagline || "—"}</div>
+        <div style="color:#9ca3af;font-size:.875rem;line-height:1.7;max-width:500px;">${p.bio || "—"}</div>
+        <div style="display:flex;gap:1rem;margin-top:.875rem;flex-wrap:wrap;font-size:.8rem;color:var(--muted);">
+          ${p.email ? `<span>✉ ${p.email}</span>` : ""}
+          ${p.phone ? `<span>📞 ${p.phone}</span>` : ""}
+          ${p.university ? `<span>🎓 ${p.university}</span>` : ""}
+          ${p.year ? `<span>📅 ${p.year}</span>` : ""}
+          ${p.gpa ? `<span>⭐ GPA ${p.gpa}</span>` : ""}
+          ${p.location ? `<span>📍 ${p.location}</span>` : ""}
+        </div>
+      </div>
+    </div>`;
+}
+
+function openProfileModal() {
+  const p = profileData || {};
+  document.getElementById("modal-title").textContent = "Edit Profile";
+  document.getElementById("modal-body").innerHTML = `
+    <div class="form-group">
+      <label>Profile Photo</label>
+      <div class="img-upload-area" onclick="document.getElementById('photo-input').click()">
+        ${p.photo_url ? `<img class="img-preview" src="${p.photo_url}" id="photo-preview"/>` : `<div style="color:var(--muted);font-size:.8rem;margin-bottom:.5rem">Click to upload photo</div>`}
+        <div class="img-upload-hint">JPG, PNG — max 10MB</div>
+        <input type="file" id="photo-input" accept="image/*" onchange="previewPhoto(this)"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Full Name</label><input id="f-name" value="${p.name||""}" placeholder="Your Name"/></div>
+      <div class="form-group"><label>Tagline</label><input id="f-tagline" value="${p.tagline||""}" placeholder="Student Pharmacist"/></div>
+    </div>
+    <div class="form-group"><label>Bio</label><textarea id="f-bio" style="height:80px">${p.bio||""}</textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Email</label><input id="f-email" value="${p.email||""}" type="email"/></div>
+      <div class="form-group"><label>Phone</label><input id="f-phone" value="${p.phone||""}" placeholder="+1 234 567 8900"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>LinkedIn URL</label><input id="f-linkedin" value="${p.linkedin||""}" placeholder="https://linkedin.com/in/..."/></div>
+      <div class="form-group"><label>Location</label><input id="f-location" value="${p.location||""}" placeholder="City, Country"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>University</label><input id="f-university" value="${p.university||""}" placeholder="University Name"/></div>
+      <div class="form-group"><label>Year</label><input id="f-year" value="${p.year||""}" placeholder="4th Year"/></div>
+    </div>
+    <div class="form-group"><label>GPA</label><input id="f-gpa" value="${p.gpa||""}" placeholder="3.8/4.0" style="max-width:200px"/></div>
+    <div class="modal-err" id="modal-err"></div>
+    <div class="modal-ok" id="modal-ok"></div>`;
+  currentTable = "profile";
+  editId = p.id || null;
+  document.getElementById("modal-bg").style.display = "flex";
+}
+
+function previewPhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const area = input.parentElement;
+    let prev = document.getElementById("photo-preview");
+    if (!prev) { prev = document.createElement("img"); prev.id = "photo-preview"; prev.className = "img-preview"; area.insertBefore(prev, area.firstChild); }
+    prev.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── GENERIC TABLES ───────────────────────────────────────────
+async function loadTable(table) {
+  const res = await api("GET", "/api/admin/" + table);
+  const data = res.data || [];
+  const tbody = document.getElementById("tbl-" + table);
+  if (!tbody) return;
+  if (!data.length) { tbody.innerHTML = `<tr><td colspan="10"><div class="empty">No ${table} yet.</div></td></tr>`; return; }
+  tbody.innerHTML = data.map(row => renderRow(table, row)).join("");
+}
+
+function renderRow(table, row) {
+  let cells = "";
+  if (table === "skills") cells = `<td>${row.name}</td><td><span class="badge badge-teal">${row.category}</span></td><td>${row.proficiency}%</td>`;
+  else if (table === "projects") cells = `<td>${row.title}</td><td><small style="color:var(--muted)">${(row.tags||"").slice(0,40)}</small></td><td>${row.is_featured ? '<span class="badge badge-green">Yes</span>' : "—"}</td>`;
+  else if (table === "experience") cells = `<td>${row.title}</td><td>${row.organization||""}</td><td><span class="badge badge-violet">${row.type||""}</span></td><td style="color:var(--muted);font-size:.8rem">${row.start_date||""} — ${row.end_date||"Present"}</td>`;
+  else if (table === "certifications") cells = `<td>${row.name}</td><td style="color:var(--muted)">${row.issuing_body||""}</td><td style="color:var(--muted)">${row.issue_date||""}</td>`;
+  else if (table === "education") cells = `<td>${row.degree||""}</td><td style="color:var(--muted)">${row.institution||""}</td><td style="color:var(--muted);font-size:.8rem">${row.start_date||""} — ${row.end_date||"Present"}</td><td>${row.is_current ? '<span class="badge badge-teal">Yes</span>' : "—"}</td>`;
+  return `<tr><td style="display:none">${row.id}</td>${cells}<td><div class="td-actions">
+    <button class="edit-btn" onclick='openEdit("${table}","${row.id}")'>Edit</button>
+    <button class="del-btn" onclick='deleteItem("${table}","${row.id}")'>Delete</button>
+  </div></td></tr>`;
+}
+
+// ── MODAL FORMS ──────────────────────────────────────────────
+const formFields = {
+  skills: `
+    <div class="form-group"><label>Skill Name *</label><input id="f-name" placeholder="e.g. Clinical Pharmacology"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Category</label>
+        <select id="f-category"><option>Clinical</option><option>Pharmaceutical</option><option>Soft</option><option>Tools</option></select>
+      </div>
+      <div class="form-group"><label>Proficiency <span class="range-val" id="pct-val">80</span>%</label>
+        <input type="range" id="f-proficiency" min="0" max="100" value="80" oninput="document.getElementById('pct-val').textContent=this.value"/>
+      </div>
+    </div>
+    <div class="form-group"><label>Sort Order</label><input id="f-sort_order" type="number" value="0" style="max-width:100px"/></div>`,
+
+  projects: `
+    <div class="form-group"><label>Title *</label><input id="f-title" placeholder="Project title"/></div>
+    <div class="form-group"><label>Description</label><textarea id="f-description" placeholder="What is this project about?"></textarea></div>
+    <div class="form-group"><label>Tags (comma separated)</label><input id="f-tags" placeholder="pharmacology, research, patient care"/></div>
+    <div class="form-group"><label>Link (optional)</label><input id="f-link" placeholder="https://..."/></div>
+    <div class="form-group"><div class="check-row"><input type="checkbox" id="f-is_featured"/><label for="f-is_featured">Featured project</label></div></div>
+    <div class="form-group"><label>Sort Order</label><input id="f-sort_order" type="number" value="0" style="max-width:100px"/></div>`,
+
+  experience: `
+    <div class="form-row">
+      <div class="form-group"><label>Job Title *</label><input id="f-title" placeholder="Clinical Rotation Intern"/></div>
+      <div class="form-group"><label>Organization *</label><input id="f-organization" placeholder="City General Hospital"/></div>
+    </div>
+    <div class="form-group"><label>Type</label>
+      <select id="f-type"><option value="internship">Internship</option><option value="rotation">Clinical Rotation</option><option value="community">Community</option><option value="research">Research</option></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Start Date</label><input id="f-start_date" placeholder="Jan 2023"/></div>
+      <div class="form-group"><label>End Date</label><input id="f-end_date" placeholder="May 2023 or leave blank"/></div>
+    </div>
+    <div class="form-group"><label>Description</label><textarea id="f-description" placeholder="What did you do?"></textarea></div>
+    <div class="form-group"><div class="check-row"><input type="checkbox" id="f-is_current"/><label for="f-is_current">Current position</label></div></div>
+    <div class="form-group"><label>Sort Order</label><input id="f-sort_order" type="number" value="0" style="max-width:100px"/></div>`,
+
+  certifications: `
+    <div class="form-group"><label>Certification Name *</label><input id="f-name" placeholder="e.g. Basic Life Support (BLS)"/></div>
+    <div class="form-group"><label>Issuing Body</label><input id="f-issuing_body" placeholder="American Heart Association"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Issue Date</label><input id="f-issue_date" placeholder="2023"/></div>
+      <div class="form-group"><label>Expiry Date</label><input id="f-expiry_date" placeholder="2025 or leave blank"/></div>
+    </div>
+    <div class="form-group"><label>Credential URL</label><input id="f-credential_url" placeholder="https://..."/></div>
+    <div class="form-group"><label>Sort Order</label><input id="f-sort_order" type="number" value="0" style="max-width:100px"/></div>`,
+
+  education: `
+    <div class="form-group"><label>Degree *</label><input id="f-degree" placeholder="Doctor of Pharmacy (Pharm.D)"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Field of Study</label><input id="f-field" placeholder="Pharmacy"/></div>
+      <div class="form-group"><label>Institution *</label><input id="f-institution" placeholder="University Name"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Start Date</label><input id="f-start_date" placeholder="2021"/></div>
+      <div class="form-group"><label>End Date</label><input id="f-end_date" placeholder="2025 or leave blank"/></div>
+    </div>
+    <div class="form-group"><label>Description</label><textarea id="f-description" placeholder="Brief overview..."></textarea></div>
+    <div class="form-group"><label>Achievements</label><textarea id="f-achievements" placeholder="Notable achievements, honors..."></textarea></div>
+    <div class="form-group"><div class="check-row"><input type="checkbox" id="f-is_current"/><label for="f-is_current">Currently studying here</label></div></div>
+    <div class="form-group"><label>Sort Order</label><input id="f-sort_order" type="number" value="0" style="max-width:100px"/></div>`,
+};
+
+function openModal(table, data) {
+  currentTable = table;
+  editId = data?.id || null;
+  document.getElementById("modal-title").textContent = (data ? "Edit" : "Add") + " " + table.slice(0,1).toUpperCase() + table.slice(1,-1);
+  document.getElementById("modal-body").innerHTML = (formFields[table] || "") + `<div class="modal-err" id="modal-err"></div><div class="modal-ok" id="modal-ok"></div>`;
+  if (data) populateForm(table, data);
+  document.getElementById("modal-bg").style.display = "flex";
+}
+
+function openEdit(table, id) {
+  api("GET", "/api/admin/" + table).then(res => {
+    const item = (res.data || []).find(r => r.id === id);
+    if (item) openModal(table, item);
+  });
+}
+
+function populateForm(table, d) {
+  const set = (id, val) => { const el = document.getElementById(id); if (!el) return; if (el.type === "checkbox") el.checked = !!val; else if (el.type === "range") { el.value = val; const pv = document.getElementById("pct-val"); if (pv) pv.textContent = val; } else el.value = val || ""; };
+  const fields = { skills:["name","category","proficiency","sort_order"], projects:["title","description","tags","link","is_featured","sort_order"], experience:["title","organization","type","start_date","end_date","description","is_current","sort_order"], certifications:["name","issuing_body","issue_date","expiry_date","credential_url","sort_order"], education:["degree","field","institution","start_date","end_date","description","achievements","is_current","sort_order"] };
+  (fields[table] || []).forEach(f => set("f-" + f, d[f]));
+}
+
+function getFormData(table) {
+  const get = id => { const el = document.getElementById(id); if (!el) return undefined; return el.type === "checkbox" ? el.checked : el.value; };
+  const fields = { skills:["name","category","proficiency","sort_order"], projects:["title","description","tags","link","is_featured","sort_order"], experience:["title","organization","type","start_date","end_date","description","is_current","sort_order"], certifications:["name","issuing_body","issue_date","expiry_date","credential_url","sort_order"], education:["degree","field","institution","start_date","end_date","description","achievements","is_current","sort_order"] };
+  const data = {};
+  (fields[table] || []).forEach(f => { const v = get("f-" + f); if (v !== undefined) data[f] = v; });
+  if (data.proficiency) data.proficiency = parseInt(data.proficiency);
+  if (data.sort_order !== undefined) data.sort_order = parseInt(data.sort_order) || 0;
+  return data;
+}
+
+async function saveModal() {
+  const btn = document.getElementById("modal-save-btn");
+  const errEl = document.getElementById("modal-err");
+  const okEl = document.getElementById("modal-ok");
+  if (errEl) errEl.style.display = "none";
+  if (okEl) okEl.style.display = "none";
+  btn.disabled = true; btn.textContent = "Saving...";
+
+  try {
+    if (currentTable === "profile") {
+      await saveProfile();
+    } else {
+      const data = getFormData(currentTable);
+      let res;
+      if (editId) res = await api("PUT", `/api/admin/${currentTable}/${editId}`, data);
+      else res = await api("POST", `/api/admin/${currentTable}`, data);
+      if (!res.success) throw new Error(res.error || "Save failed");
+      await loadTable(currentTable);
+      showToast("Saved successfully!", "success");
+      closeModal();
+    }
+  } catch (e) {
+    if (errEl) { errEl.textContent = e.message; errEl.style.display = "block"; }
+  }
+  btn.disabled = false; btn.textContent = "Save";
+}
+
+async function saveProfile() {
+  const errEl = document.getElementById("modal-err");
+  const okEl = document.getElementById("modal-ok");
+  const get = id => { const el = document.getElementById(id); return el ? el.value : ""; };
+  let photoUrl = profileData?.photo_url || null;
+
+  const photoInput = document.getElementById("photo-input");
+  if (photoInput?.files[0]) {
+    const fd = new FormData();
+    fd.append("file", photoInput.files[0]);
+    const resp = await fetch("/api/upload-image", { method: "POST", headers: { "Authorization": "Bearer " + token }, body: fd });
+    const result = await resp.json();
+    if (!result.success) throw new Error(result.error || "Photo upload failed");
+    photoUrl = result.url;
+  }
+
+  const body = { name: get("f-name"), tagline: get("f-tagline"), bio: get("f-bio"), email: get("f-email"), phone: get("f-phone"), linkedin: get("f-linkedin"), location: get("f-location"), university: get("f-university"), year: get("f-year"), gpa: get("f-gpa"), photo_url: photoUrl };
+  const res = editId ? await api("PUT", `/api/admin/profile/${editId}`, body) : await api("POST", "/api/admin/profile", body);
+  if (!res.success) throw new Error(res.error || "Save failed");
+  await loadProfile();
+  showToast("Profile updated!", "success");
+  if (okEl) { okEl.textContent = "Profile saved!"; okEl.style.display = "block"; }
+  setTimeout(closeModal, 1200);
+}
+
+async function deleteItem(table, id) {
+  if (!confirm(`Delete this ${table.slice(0,-1)}? This cannot be undone.`)) return;
+  const res = await api("DELETE", `/api/admin/${table}/${id}`);
+  if (res.success) { showToast("Deleted!", "success"); loadTable(table); }
+  else showToast(res.error || "Delete failed", "error");
+}
+
+function closeModal() { document.getElementById("modal-bg").style.display = "none"; currentTable = null; editId = null; }
+function closeModalBg(e) { if (e.target === document.getElementById("modal-bg")) closeModal(); }
+
+// ── TOAST ────────────────────────────────────────────────────
+function showToast(msg, type = "success") {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.className = "toast " + type + " show";
+  setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+checkAuth();
+</script>
+</body>
+</html>
