@@ -117,7 +117,10 @@ def admin_list(table):
     if table not in ALLOWED_TABLES:
         return jsonify({"error": "Invalid table"}), 400
     try:
-        result = sb_admin.from_(table).select("*").order("created_at", desc=False).execute()
+        if table == "profile":
+            result = sb_admin.from_(table).select("*").execute()
+        else:
+            result = sb_admin.from_(table).select("*").order("sort_order", desc=False).execute()
         return jsonify({"success": True, "data": result.data})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
@@ -143,6 +146,7 @@ def admin_update(table, item_id):
         data = request.get_json()
         data.pop("id", None)
         data.pop("created_at", None)
+        data.pop("updated_at", None)
         result = sb_admin.from_(table).update(data).eq("id", item_id).execute()
         return jsonify({"success": True, "data": result.data})
     except Exception as e:
