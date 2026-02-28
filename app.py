@@ -62,6 +62,11 @@ def admin():
         supabase_anon_key=SUPABASE_ANON_KEY)
 
 
+# ── FAVICON ─────────────────────────────────────────────────
+@app.route("/favicon.ico")
+def favicon():
+    return "", 204
+
 # ── API: CONTACT FORM (public) ───────────────────────────────
 @app.route("/api/contact", methods=["POST"])
 def contact():
@@ -119,6 +124,8 @@ def admin_list(table):
     try:
         if table == "profile":
             result = sb_admin.from_(table).select("*").execute()
+        elif table == "messages":
+            result = sb_admin.from_(table).select("*").order("created_at", desc=True).execute()
         else:
             result = sb_admin.from_(table).select("*").order("sort_order", desc=False).execute()
         return jsonify({"success": True, "data": result.data})
