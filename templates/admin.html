@@ -132,6 +132,18 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .img-upload-area input{display:none;}
 .img-preview{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto .75rem;display:block;border:2px solid var(--teal);}
 .img-upload-hint{color:var(--muted);font-size:.8rem;}
+
+/* ── THEME PICKER ─────────────────────────────────────────── */
+.theme-picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.75rem;margin-bottom:.5rem;}
+.theme-swatch{border:2px solid var(--border);border-radius:10px;padding:.7rem;cursor:pointer;transition:border-color .2s,transform .15s;background:var(--bg);}
+.theme-swatch:hover{transform:translateY(-2px);}
+.theme-swatch.selected{border-color:var(--teal);}
+.theme-swatch-preview{height:48px;border-radius:6px;margin-bottom:.55rem;display:flex;overflow:hidden;border:1px solid rgba(255,255,255,0.08);}
+.theme-swatch-preview span{flex:1;}
+.theme-swatch-name{font-size:.78rem;font-weight:600;color:var(--text);}
+.theme-swatch-desc{font-size:.68rem;color:var(--muted);margin-top:.15rem;line-height:1.4;}
+.theme-swatch-check{display:inline-block;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--border);margin-right:.4rem;vertical-align:middle;position:relative;top:-1px;}
+.theme-swatch.selected .theme-swatch-check{background:var(--teal);border-color:var(--teal);}
 .check-row{display:flex;align-items:center;gap:.5rem;margin-top:.25rem;}
 .check-row input[type=checkbox]{width:auto;accent-color:var(--teal);}
 .check-row label{font-size:.875rem;color:var(--text);text-transform:none;letter-spacing:0;}
@@ -482,6 +494,7 @@ async function loadProfile() {
   profileData = (res.data || [])[0] || {};
   const el = document.getElementById("profile-preview");
   const p = profileData;
+  const THEME_NAMES = { apothecary: "Apothecary", clinical: "Clinical", botanical: "Botanical", datasheet: "Pharma Lab", midnight: "Midnight", mono: "Minimal Mono" };
   el.innerHTML = `
     <div style="display:grid;grid-template-columns:80px 1fr;gap:1.5rem;align-items:start;">
       ${p.photo_url ? `<img src="${p.photo_url}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--teal);"/>` : `<div style="width:80px;height:80px;border-radius:50%;background:var(--bg);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.75rem;">Photo</div>`}
@@ -490,6 +503,7 @@ async function loadProfile() {
         <div style="color:var(--teal);font-size:.9rem;margin-bottom:.75rem;">${p.tagline || "—"}</div>
         <div style="color:#9ca3af;font-size:.875rem;line-height:1.7;max-width:500px;">${p.bio || "—"}</div>
         <div style="display:flex;gap:1rem;margin-top:.875rem;flex-wrap:wrap;font-size:.8rem;color:var(--muted);">
+          <span>🎨 Theme: <strong style="color:var(--teal)">${THEME_NAMES[p.theme] || "Apothecary"}</strong></span>
           ${p.email ? `<span>✉ ${p.email}</span>` : ""}
           ${p.phone ? `<span>📞 ${p.phone}</span>` : ""}
           ${p.university ? `<span>🎓 ${p.university}</span>` : ""}
@@ -503,8 +517,29 @@ async function loadProfile() {
 
 function openProfileModal() {
   const p = profileData || {};
+  const currentTheme = p.theme || "apothecary";
+  const THEMES = [
+    { id: "apothecary", name: "Apothecary", desc: "Warm paper, pharmacy green, prescription-label feel", colors: ["#F7F4EC","#2E5E4E","#B5654A"] },
+    { id: "clinical",   name: "Clinical",   desc: "Sterile white, medical blue, dashboard precision",   colors: ["#FAFBFC","#3B6FA0","#3FA796"] },
+    { id: "botanical",  name: "Botanical",  desc: "Cream, botanical green, field-guide warmth",          colors: ["#F2EFE6","#3C5A45","#C97B5C"] },
+    { id: "datasheet",  name: "Pharma Lab", desc: "White, near-black, monograph/data-sheet rigor",       colors: ["#FFFFFF","#111315","#D44C2C"] },
+    { id: "midnight",   name: "Midnight",   desc: "Refined dark navy, sage and gold, no glow",           colors: ["#0E1620","#7FB3A0","#D4A857"] },
+    { id: "mono",       name: "Minimal Mono", desc: "Pure white, ultra-quiet, editorial spacing",         colors: ["#FFFFFF","#1A1A1A","#3E7C6B"] },
+  ];
   document.getElementById("modal-title").textContent = "Edit Profile";
   document.getElementById("modal-body").innerHTML = `
+    <div class="form-group">
+      <label>Site Theme</label>
+      <div class="theme-picker" id="theme-picker">
+        ${THEMES.map(t => `
+          <div class="theme-swatch ${t.id === currentTheme ? "selected" : ""}" data-theme-id="${t.id}" onclick="selectTheme('${t.id}')">
+            <div class="theme-swatch-preview">${t.colors.map(c => `<span style="background:${c}"></span>`).join("")}</div>
+            <div class="theme-swatch-name"><span class="theme-swatch-check"></span>${t.name}</div>
+            <div class="theme-swatch-desc">${t.desc}</div>
+          </div>`).join("")}
+      </div>
+      <input type="hidden" id="f-theme" value="${currentTheme}"/>
+    </div>
     <div class="form-group">
       <label>Profile Photo</label>
       <div class="img-upload-area" onclick="document.getElementById('photo-input').click()">
@@ -549,6 +584,13 @@ function previewPhoto(input) {
     prev.src = e.target.result;
   };
   reader.readAsDataURL(file);
+}
+
+function selectTheme(themeId) {
+  document.getElementById("f-theme").value = themeId;
+  document.querySelectorAll("#theme-picker .theme-swatch").forEach(el => {
+    el.classList.toggle("selected", el.dataset.themeId === themeId);
+  });
 }
 
 // ── GENERIC TABLES ───────────────────────────────────────────
@@ -713,7 +755,7 @@ async function saveProfile() {
     photoUrl = result.url;
   }
 
-  const body = { name: get("f-name"), tagline: get("f-tagline"), bio: get("f-bio"), email: get("f-email"), phone: get("f-phone"), linkedin: get("f-linkedin"), location: get("f-location"), university: get("f-university"), year: get("f-year"), gpa: get("f-gpa"), photo_url: photoUrl };
+  const body = { name: get("f-name"), tagline: get("f-tagline"), bio: get("f-bio"), email: get("f-email"), phone: get("f-phone"), linkedin: get("f-linkedin"), location: get("f-location"), university: get("f-university"), year: get("f-year"), gpa: get("f-gpa"), photo_url: photoUrl, theme: get("f-theme") || "apothecary" };
   const res = editId ? await api("PUT", `/api/admin/profile/${editId}`, body) : await api("POST", "/api/admin/profile", body);
   if (!res.success) throw new Error(res.error || "Save failed");
   await loadProfile();
