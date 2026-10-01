@@ -503,7 +503,6 @@ async function loadProfile() {
         <div style="color:var(--teal);font-size:.9rem;margin-bottom:.75rem;">${p.tagline || "—"}</div>
         <div style="color:#9ca3af;font-size:.875rem;line-height:1.7;max-width:500px;">${p.bio || "—"}</div>
         <div style="display:flex;gap:1rem;margin-top:.875rem;flex-wrap:wrap;font-size:.8rem;color:var(--muted);">
-          <span>🎨 Theme: <strong style="color:var(--teal)">${THEME_NAMES[p.theme] || "Apothecary"}</strong></span>
           ${p.email ? `<span>✉ ${p.email}</span>` : ""}
           ${p.phone ? `<span>📞 ${p.phone}</span>` : ""}
           ${p.university ? `<span>🎓 ${p.university}</span>` : ""}
@@ -529,22 +528,10 @@ function openProfileModal() {
   document.getElementById("modal-title").textContent = "Edit Profile";
   document.getElementById("modal-body").innerHTML = `
     <div class="form-group">
-      <label>Site Theme</label>
-      <div class="theme-picker" id="theme-picker">
-        ${THEMES.map(t => `
-          <div class="theme-swatch ${t.id === currentTheme ? "selected" : ""}" data-theme-id="${t.id}" onclick="selectTheme('${t.id}')">
-            <div class="theme-swatch-preview">${t.colors.map(c => `<span style="background:${c}"></span>`).join("")}</div>
-            <div class="theme-swatch-name"><span class="theme-swatch-check"></span>${t.name}</div>
-            <div class="theme-swatch-desc">${t.desc}</div>
-          </div>`).join("")}
-      </div>
-      <input type="hidden" id="f-theme" value="${currentTheme}"/>
-    </div>
-    <div class="form-group">
       <label>Profile Photo</label>
       <div class="img-upload-area" onclick="document.getElementById('photo-input').click()">
         ${p.photo_url ? `<img class="img-preview" src="${p.photo_url}" id="photo-preview"/>` : `<div style="color:var(--muted);font-size:.8rem;margin-bottom:.5rem">Click to upload photo</div>`}
-        <div class="img-upload-hint">JPG, PNG — max 10MB</div>
+        <div class="img-upload-hint">JPG, PNG — max 10MB · saved to Supabase Storage</div>
         <input type="file" id="photo-input" accept="image/*" onchange="previewPhoto(this)"/>
       </div>
     </div>
@@ -755,7 +742,7 @@ async function saveProfile() {
     photoUrl = result.url;
   }
 
-  const body = { name: get("f-name"), tagline: get("f-tagline"), bio: get("f-bio"), email: get("f-email"), phone: get("f-phone"), linkedin: get("f-linkedin"), location: get("f-location"), university: get("f-university"), year: get("f-year"), gpa: get("f-gpa"), photo_url: photoUrl, theme: get("f-theme") || "apothecary" };
+  const body = { name: get("f-name"), tagline: get("f-tagline"), bio: get("f-bio"), email: get("f-email"), phone: get("f-phone"), linkedin: get("f-linkedin"), location: get("f-location"), university: get("f-university"), year: get("f-year"), gpa: get("f-gpa"), photo_url: photoUrl };
   const res = editId ? await api("PUT", `/api/admin/profile/${editId}`, body) : await api("POST", "/api/admin/profile", body);
   if (!res.success) throw new Error(res.error || "Save failed");
   await loadProfile();
