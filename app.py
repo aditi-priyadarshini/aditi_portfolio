@@ -1,6 +1,7 @@
 import os
 import bcrypt
-import requests
+import uuid
+import mimetypes
 from flask import Flask, render_template, request, jsonify
 from supabase import create_client, Client
 from functools import wraps
@@ -27,7 +28,7 @@ def handle_exception(e):
 SUPABASE_URL          = os.getenv("SUPABASE_URL", "")
 SUPABASE_ANON_KEY     = os.getenv("SUPABASE_ANON_KEY", "")
 SUPABASE_SERVICE_KEY  = os.getenv("SUPABASE_SERVICE_KEY", "")
-CLOUDINARY_CLOUD      = os.getenv("CLOUDINARY_CLOUD", "")
+STORAGE_BUCKET        = os.getenv("SUPABASE_BUCKET", "portfolio")
 
 sb_admin: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
@@ -84,34 +85,34 @@ def contact():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-# ── API: UPLOAD IMAGE (auth required) ───────────────────────
+# ── API: UPLOAD IMAGE → Supabase Storage (auth required) ─────
+def ensure_bucket():
+    try:
+        sb_admin.storage.get_bucket(STORAGE_BUCKET)
+    except Exception:
+        sb_admin.storage.create_bucket(STORAGE_BUCKET, options={"public": True})
+
 @app.route("/api/upload-image", methods=["POST"])
 @require_auth
 def upload_image():
     if "file" not in request.files:
         return jsonify({"success": False, "error": "No file provided"}), 400
     file = request.files["file"]
-    if not file.content_type.startswith("image/"):
+    if not (file.content_type or "").startswith("image/"):
         return jsonify({"success": False, "error": "Only images allowed"}), 400
-    file.seek(0, 2)
-    if file.tell() > 10 * 1024 * 1024:
+    data = file.read()
+    if len(data) > 10 * 1024 * 1024:
         return jsonify({"success": False, "error": "Max 10MB"}), 400
-    file.seek(0)
-    if not CLOUDINARY_CLOUD:
-        return jsonify({"success": False, "error": "Cloudinary not configured"}), 500
+    ext = (mimetypes.guess_extension(file.content_type) or ".jpg").lstrip(".")
+    ext = "jpg" if ext == "jpe" else ext
+    path = f"profile/{uuid.uuid4().hex}.{ext}"
     try:
-        resp = requests.post(
-            f"https://api.cloudinary.com/v1_1/{CLOUDINARY_CLOUD}/image/upload",
-            data={"upload_preset": "pharmacy_portfolio", "folder": "pharmacy-portfolio"},
-            files={"file": (file.filename or "image.jpg", file.stream, file.content_type)},
-            timeout=30
-        )
-        result = resp.json()
-        if "error" in result:
-            return jsonify({"success": False, "error": result["error"]["message"]}), 500
-        return jsonify({"success": True, "url": result["secure_url"]})
+        ensure_bucket()
+        sb_admin.storage.from_(STORAGE_BUCKET).upload(path, data, {"content-type": file.content_type})
+        url = sb_admin.storage.from_(STORAGE_BUCKET).get_public_url(path)
+        return jsonify({"success": True, "url": url.rstrip("?")})
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+        return jsonify({"success": False, "error": f"Supabase upload failed: {e}"}), 500
 
 # ── API: ADMIN CRUD ──────────────────────────────────────────
 ALLOWED_TABLES = {"profile", "education", "experience", "skills", "certifications", "projects", "messages"}
@@ -173,7 +174,7 @@ def admin_delete(table, item_id):
 # ── HEALTH CHECK ─────────────────────────────────────────────
 @app.route("/api/health")
 def health():
-    return jsonify({"status": "ok", "supabase": bool(SUPABASE_URL), "cloudinary": bool(CLOUDINARY_CLOUD)})
+    return jsonify({"status": "ok", "supabase": bool(SUPABASE_URL), "storage_bucket": STORAGE_BUCKET})
 
 if __name__ == "__main__":
     debug_mode = os.getenv("FLASK_DEBUG", "false").lower() == "true"
