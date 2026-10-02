@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Admin — Pharmacy Portfolio</title>
+<title>Admin — ADITI.LAB</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -11,7 +11,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --bg:#07090f;--bg2:#0d1117;--bg3:#111827;
-  --teal:#00e5c0;--teal2:#00b4d8;--violet:#a855f7;
+  --teal:#91a8ff;--teal2:#6e8cff;--violet:#a855f7;
   --text:#e8eaf0;--muted:#6b7280;--border:rgba(255,255,255,0.07);
   --danger:#ef4444;--success:#22c55e;
 }
@@ -287,7 +287,7 @@ input[type=range]{padding:0;accent-color:var(--teal);height:4px;}
     <div class="panel" id="panel-skills">
       <div class="section-hdr"><h2>Skills</h2><button class="add-btn" onclick="openModal('skills')">+ Add Skill</button></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Name</th><th>Category</th><th>Proficiency</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Name</th><th>Category</th><th>Record</th><th>Actions</th></tr></thead>
         <tbody id="tbl-skills"></tbody>
       </table></div>
     </div>
@@ -358,14 +358,15 @@ input[type=range]{padding:0;accent-color:var(--teal);height:4px;}
 <div class="toast" id="toast"></div>
 
 <script>
-const SUPABASE_URL = "{{ supabase_url }}";
-const SUPABASE_ANON_KEY = "{{ supabase_anon_key }}";
+const SUPABASE_URL = {{ supabase_url|tojson }};
+const SUPABASE_ANON_KEY = {{ supabase_anon_key|tojson }};
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let token = null;
 let currentTable = null;
 let editId = null;
 let profileData = null;
+let researchFields = [];
 
 // ── AUTH ─────────────────────────────────────────────────────
 function showLogin() {
@@ -438,6 +439,7 @@ function showPanel(name) {
 
 // ── LOAD ALL ─────────────────────────────────────────────────
 async function loadAll() {
+  try { const result = await api("GET", "/api/admin/project-fields"); researchFields = result.fields || []; } catch { researchFields = []; }
   await Promise.all([loadDashboard(), loadProfile(), loadTable("skills"), loadTable("projects"), loadTable("experience"), loadTable("certifications"), loadTable("education")]);
 }
 
@@ -552,6 +554,7 @@ function openProfileModal() {
       <div class="form-group"><label>University</label><input id="f-university" value="${p.university||""}" placeholder="University Name"/></div>
       <div class="form-group"><label>Year</label><input id="f-year" value="${p.year||""}" placeholder="4th Year"/></div>
     </div>
+    <div class="form-group"><label for="f-github">GitHub URL</label><input id="f-github" value="${p.github||""}" placeholder="https://github.com/..."/></div>
     <div class="form-group"><label>GPA</label><input id="f-gpa" value="${p.gpa||""}" placeholder="3.8/4.0" style="max-width:200px"/></div>
     <div class="modal-err" id="modal-err"></div>
     <div class="modal-ok" id="modal-ok"></div>`;
@@ -592,7 +595,7 @@ async function loadTable(table) {
 
 function renderRow(table, row) {
   let cells = "";
-  if (table === "skills") cells = `<td>${row.name}</td><td><span class="badge badge-teal">${row.category}</span></td><td>${row.proficiency}%</td>`;
+  if (table === "skills") cells = `<td>${row.name}</td><td><span class="badge badge-teal">${row.category}</span></td><td>Scientific toolkit</td>`;
   else if (table === "projects") cells = `<td>${row.title}</td><td><small style="color:var(--muted)">${(row.tags||"").slice(0,40)}</small></td><td>${row.is_featured ? '<span class="badge badge-green">Yes</span>' : "—"}</td>`;
   else if (table === "experience") cells = `<td>${row.title}</td><td>${row.organization||""}</td><td><span class="badge badge-violet">${row.type||""}</span></td><td style="color:var(--muted);font-size:.8rem">${row.start_date||""} — ${row.end_date||"Present"}</td>`;
   else if (table === "certifications") cells = `<td>${row.name}</td><td style="color:var(--muted)">${row.issuing_body||""}</td><td style="color:var(--muted)">${row.issue_date||""}</td>`;
@@ -609,11 +612,9 @@ const formFields = {
     <div class="form-group"><label>Skill Name *</label><input id="f-name" placeholder="e.g. Clinical Pharmacology"/></div>
     <div class="form-row">
       <div class="form-group"><label>Category</label>
-        <select id="f-category"><option>Clinical</option><option>Pharmaceutical</option><option>Soft</option><option>Tools</option></select>
+        <select id="f-category"><option>Formulation</option><option>Pharmaceutical</option><option>Research</option><option>Communication</option><option>Clinical</option><option>Soft</option><option>Tools</option></select>
       </div>
-      <div class="form-group"><label>Proficiency <span class="range-val" id="pct-val">80</span>%</label>
-        <input type="range" id="f-proficiency" min="0" max="100" value="80" oninput="document.getElementById('pct-val').textContent=this.value"/>
-      </div>
+
     </div>
     <div class="form-group"><label>Sort Order</label><input id="f-sort_order" type="number" value="0" style="max-width:100px"/></div>`,
 
@@ -671,7 +672,8 @@ function openModal(table, data) {
   currentTable = table;
   editId = data?.id || null;
   document.getElementById("modal-title").textContent = (data ? "Edit" : "Add") + " " + table.slice(0,1).toUpperCase() + table.slice(1,-1);
-  document.getElementById("modal-body").innerHTML = (formFields[table] || "") + `<div class="modal-err" id="modal-err"></div><div class="modal-ok" id="modal-ok"></div>`;
+  const researchForm = table === "projects" ? (researchFields.length ? '<div class="form-group"><label>Research dossier / optional fields</label></div>' + researchFields.map(f => `<div class="form-group"><label for="f-${f}">${f.replaceAll('_', ' ')}</label><textarea id="f-${f}" placeholder="Leave blank if not documented"></textarea></div>`).join('') : '<p style="color:var(--muted);font-size:.8rem;margin:16px 0">The current database uses the legacy project fields. Apply migrations/001_research_dossiers.sql to enable extended research records.</p>') : "";
+  document.getElementById("modal-body").innerHTML = (formFields[table] || "") + researchForm + `<div class="modal-err" id="modal-err"></div><div class="modal-ok" id="modal-ok"></div>`;
   if (data) populateForm(table, data);
   document.getElementById("modal-bg").style.display = "flex";
 }
@@ -686,14 +688,14 @@ function openEdit(table, id) {
 function populateForm(table, d) {
   const set = (id, val) => { const el = document.getElementById(id); if (!el) return; if (el.type === "checkbox") el.checked = !!val; else if (el.type === "range") { el.value = val; const pv = document.getElementById("pct-val"); if (pv) pv.textContent = val; } else el.value = val || ""; };
   const fields = { skills:["name","category","proficiency","sort_order"], projects:["title","description","tags","link","is_featured","sort_order"], experience:["title","organization","type","start_date","end_date","description","is_current","sort_order"], certifications:["name","issuing_body","issue_date","expiry_date","credential_url","sort_order"], education:["degree","field","institution","start_date","end_date","description","achievements","is_current","sort_order"] };
-  (fields[table] || []).forEach(f => set("f-" + f, d[f]));
+  [...(fields[table] || []), ...(table === "projects" ? researchFields : [])].forEach(f => set("f-" + f, d[f]));
 }
 
 function getFormData(table) {
   const get = id => { const el = document.getElementById(id); if (!el) return undefined; return el.type === "checkbox" ? el.checked : el.value; };
   const fields = { skills:["name","category","proficiency","sort_order"], projects:["title","description","tags","link","is_featured","sort_order"], experience:["title","organization","type","start_date","end_date","description","is_current","sort_order"], certifications:["name","issuing_body","issue_date","expiry_date","credential_url","sort_order"], education:["degree","field","institution","start_date","end_date","description","achievements","is_current","sort_order"] };
   const data = {};
-  (fields[table] || []).forEach(f => { const v = get("f-" + f); if (v !== undefined) data[f] = v; });
+  [...(fields[table] || []), ...(table === "projects" ? researchFields : [])].forEach(f => { const v = get("f-" + f); if (v !== undefined) data[f] = v; });
   if (data.proficiency) data.proficiency = parseInt(data.proficiency);
   if (data.sort_order !== undefined) data.sort_order = parseInt(data.sort_order) || 0;
   return data;
@@ -742,7 +744,7 @@ async function saveProfile() {
     photoUrl = result.url;
   }
 
-  const body = { name: get("f-name"), tagline: get("f-tagline"), bio: get("f-bio"), email: get("f-email"), phone: get("f-phone"), linkedin: get("f-linkedin"), location: get("f-location"), university: get("f-university"), year: get("f-year"), gpa: get("f-gpa"), photo_url: photoUrl };
+  const body = { name: get("f-name"), tagline: get("f-tagline"), bio: get("f-bio"), email: get("f-email"), phone: get("f-phone"), linkedin: get("f-linkedin"), github: get("f-github"), location: get("f-location"), university: get("f-university"), year: get("f-year"), gpa: get("f-gpa"), photo_url: photoUrl };
   const res = editId ? await api("PUT", `/api/admin/profile/${editId}`, body) : await api("POST", "/api/admin/profile", body);
   if (!res.success) throw new Error(res.error || "Save failed");
   await loadProfile();
