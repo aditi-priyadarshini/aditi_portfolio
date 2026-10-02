@@ -114,6 +114,18 @@ def upload_image():
     except Exception as e:
         return jsonify({"success": False, "error": f"Supabase upload failed: {e}"}), 500
 
+# Optional dossier schema capability: legacy databases keep their editor working.
+PROJECT_RESEARCH_FIELDS = ['research_category', 'objective', 'problem_statement', 'methodology', 'formulation', 'materials', 'variables', 'evaluation_parameters', 'observations', 'result', 'conclusion']
+
+@app.route("/api/admin/project-fields", methods=["GET"])
+@require_auth
+def project_fields():
+    try:
+        sb_admin.from_("projects").select(",".join(PROJECT_RESEARCH_FIELDS)).limit(1).execute()
+        return jsonify({"success": True, "fields": PROJECT_RESEARCH_FIELDS})
+    except Exception:
+        return jsonify({"success": True, "fields": []})
+
 # ── API: ADMIN CRUD ──────────────────────────────────────────
 ALLOWED_TABLES = {"profile", "education", "experience", "skills", "certifications", "projects", "messages"}
 
